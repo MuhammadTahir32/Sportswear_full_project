@@ -6,10 +6,10 @@
 |--------|-------|
 | **Total Phases** | 11 (Phase 0-10) |
 | **Total Tasks** | 126 |
-| **Completed** | 5 |
+| **Completed** | 6 |
 | **In Progress** | 0 |
-| **Remaining** | 121 |
-| **Overall Progress** | 4.0% |
+| **Remaining** | 120 |
+| **Overall Progress** | 4.8% |
 | **Current Phase** | Phase 0: Project Foundation |
 | **Last Updated** | September 12, 2026 |
 
@@ -18,7 +18,7 @@
 ## PHASE 0: Project Foundation
 
 **Status:** In Progress
-**Progress:** 5/10 tasks (50%)
+**Progress:** 6/10 tasks (60%)
 **Goal:** Scaffold project, configure tooling, set up Supabase local dev
 
 | ID | Task | Status | Notes |
@@ -28,7 +28,7 @@
 | 0.3 | Install & configure Tailwind CSS | [x] | Tailwind v4 + brand tokens in styles.css |
 | 0.4 | Set up ESLint + Prettier with project rules | [x] | ESLint + Prettier configured, scripts added |
 | 0.5 | Create folder structure per README | [x] | Created components/ui/, lib/, hooks/ + cn.ts utility |
-| 0.6 | Set up Supabase CLI locally | [ ] | |
+| 0.6 | Set up Supabase CLI locally | [x] | `supabase init` done, config.toml + migrations/ created |
 | 0.7 | Create .env.example with all required variables | [ ] | |
 | 0.8 | Configure Git hooks (husky + lint-staged) | [ ] | |
 | 0.9 | Set up GitHub repo + branch protection rules | [ ] | |
