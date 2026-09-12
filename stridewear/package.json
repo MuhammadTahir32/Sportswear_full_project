@@ -18,6 +18,7 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.116.0",
     "@tanstack/react-router": "latest",
     "@tanstack/react-start": "latest",
     "clsx": "^2.1.1",

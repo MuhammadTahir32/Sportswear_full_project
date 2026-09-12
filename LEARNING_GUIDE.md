@@ -323,6 +323,21 @@ Before moving to Phase 1, verify:
 - [ ] You understand everything we built
 - [ ] All questions answered
 
+### Phase 0 Key Takeaways
+
+| Concept | What You Learned |
+|---------|------------------|
+| **TanStack Start** | SSR framework that renders pages on the server for faster load and better SEO |
+| **File-based routing** | Create a file in `routes/` → it becomes a URL automatically |
+| **TypeScript strict mode** | Catches errors at compile time, no `any` types allowed |
+| **Tailwind CSS v4** | Utility-first styling with `@theme` for brand tokens |
+| **ESLint vs Prettier** | ESLint = logic errors, Prettier = formatting |
+| **Supabase CLI** | Local development environment for database, auth, storage |
+| **Environment variables** | `VITE_` prefix = public (browser), no prefix = server-only |
+| **Singleton pattern** | Create once, import everywhere (Supabase client) |
+| **Git hooks** | Auto-run linter before commits to catch errors early |
+| **cn() utility** | Merge Tailwind classes safely without conflicts |
+
 **Say "Ready for Phase 1" to continue.**
 
 ---
