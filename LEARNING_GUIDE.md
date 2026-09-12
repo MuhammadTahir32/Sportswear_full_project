@@ -507,6 +507,22 @@ Before moving to Phase 2, verify:
 - [ ] You understand RLS policies
 - [ ] All questions answered
 
+### Phase 1 Key Takeaways
+
+| Concept | What You Learned |
+|---------|------------------|
+| **Database tables** | 13 tables for users, products, orders, reviews, wishlist |
+| **Primary keys** | UUID `id` column that uniquely identifies each row |
+| **Foreign keys** | Links between tables (e.g., `user_id` → `profiles.id`) |
+| **Unique constraints** | Prevent duplicate data (e.g., one review per user per product) |
+| **Check constraints** | Validate data (e.g., `rating between 1 and 5`) |
+| **Indexes** | Speed up queries on frequently searched columns |
+| **Full-text search** | PostgreSQL `tsvector` index for product search |
+| **RLS policies** | Database-level security: who can read/write each row |
+| **Triggers** | Auto-run functions when data changes (e.g., avg_rating) |
+| **Security definer** | Function runs with owner privileges (for trigger) |
+| **Seed data** | Sample data for development |
+
 **Say "Ready for Phase 2" to continue.**
 
 ---
