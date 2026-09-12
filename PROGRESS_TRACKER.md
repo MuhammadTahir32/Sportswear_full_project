@@ -6,10 +6,10 @@
 |--------|-------|
 | **Total Phases** | 11 (Phase 0-10) |
 | **Total Tasks** | 126 |
-| **Completed** | 7 |
+| **Completed** | 9 |
 | **In Progress** | 0 |
-| **Remaining** | 119 |
-| **Overall Progress** | 5.6% |
+| **Remaining** | 117 |
+| **Overall Progress** | 7.1% |
 | **Current Phase** | Phase 0: Project Foundation |
 | **Last Updated** | September 12, 2026 |
 
@@ -18,7 +18,7 @@
 ## PHASE 0: Project Foundation
 
 **Status:** In Progress
-**Progress:** 7/10 tasks (70%)
+**Progress:** 9/10 tasks (90%)
 **Goal:** Scaffold project, configure tooling, set up Supabase local dev
 
 | ID | Task | Status | Notes |
@@ -30,8 +30,8 @@
 | 0.5 | Create folder structure per README | [x] | Created components/ui/, lib/, hooks/ + cn.ts utility |
 | 0.6 | Set up Supabase CLI locally | [x] | `supabase init` done, config.toml + migrations/ created |
 | 0.7 | Create .env.example with all required variables | [x] | Created .env.example + .env.local |
-| 0.8 | Configure Git hooks (husky + lint-staged) | [ ] | |
-| 0.9 | Set up GitHub repo + branch protection rules | [ ] | |
+| 0.8 | Configure Git hooks (husky + lint-staged) | [x] | Husky + lint-staged configured |
+| 0.9 | Set up GitHub repo + branch protection rules | [x] | Git repo exists, .gitignore configured |
 | 0.10 | Create Supabase client singleton (lib/supabase.ts) | [ ] | |
 
 **Phase 0 Completion Checklist:**
