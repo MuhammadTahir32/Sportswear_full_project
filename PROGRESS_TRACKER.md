@@ -75,7 +75,7 @@
 | 1.22 | Write RLS policies for products/categories/variants/images | [x] | Included in respective migrations |
 | 1.23 | Write RLS policies for coupons | [x] | Included in 008_coupons.sql |
 | 1.24 | Create trigger: avg_rating recalculation | [x] | 014_avg_rating_trigger.sql |
-| 1.25 | Generate Supabase TypeScript types | [ ] | Pending (requires Docker) |
+| 1.25 | Generate Supabase TypeScript types | [x] | Generated via `supabase gen types typescript --local` |
 | 1.26 | Seed script: sample categories, products, variants, images | [x] | 015_seed_data.sql |
 
 **Phase 1 Completion Checklist:**
