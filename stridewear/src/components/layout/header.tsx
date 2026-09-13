@@ -21,9 +21,12 @@ export function Header() {
       <nav className="flex items-center gap-6">
         {user ? (
           <>
-            <span className="text-sm font-semibold uppercase tracking-wider text-brand-lime">
-              {user.email}
-            </span>
+            <Link
+              to="/profile"
+              className="text-sm font-semibold uppercase tracking-wider text-brand-gray-400 hover:text-brand-white"
+            >
+              Profile
+            </Link>
             <button
               onClick={handleSignOut}
               className="text-sm font-semibold uppercase tracking-wider text-brand-gray-400 hover:text-brand-white"
