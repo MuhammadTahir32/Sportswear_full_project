@@ -48,3 +48,7 @@ export function useAuth() {
   }
   return context
 }
+
+export async function signOut() {
+  await supabase.auth.signOut()
+}
