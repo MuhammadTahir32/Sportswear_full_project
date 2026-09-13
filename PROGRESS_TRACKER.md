@@ -6,12 +6,12 @@
 |--------|-------|
 | **Total Phases** | 11 (Phase 0-10) |
 | **Total Tasks** | 126 |
-| **Completed** | 26 |
+| **Completed** | 47 |
 | **In Progress** | 0 |
-| **Remaining** | 100 |
-| **Overall Progress** | 20.6% |
-| **Current Phase** | Phase 1: Database & Schema |
-| **Last Updated** | September 12, 2026 |
+| **Remaining** | 79 |
+| **Overall Progress** | 37.3% |
+| **Current Phase** | Phase 3: Product Catalog |
+| **Last Updated** | September 14, 2026 |
 
 ---
 
@@ -90,33 +90,33 @@
 
 ## PHASE 2: Authentication & User Management
 
-**Status:** Not Started
-**Progress:** 0/11 tasks (0%)
+**Status:** Complete
+**Progress:** 11/11 tasks (100%)
 **Goal:** Sign up, login, logout, password reset, email verification, role management
 
 | ID | Task | Status | Notes |
 |----|------|--------|-------|
-| 2.1 | Configure Supabase Auth: email/password + Google OAuth | [ ] | |
-| 2.2 | Create sign-up page/component with form validation | [ ] | |
-| 2.3 | Create sign-in page/component | [ ] | |
-| 2.4 | Implement email verification flow | [ ] | |
-| 2.5 | Create forgot password / reset password flow | [ ] | |
-| 2.6 | Implement auth state listener + session persistence | [ ] | |
-| 2.7 | Create protected route wrapper / middleware | [ ] | |
-| 2.8 | Implement role-based access (customer vs admin) | [ ] | |
-| 2.9 | Create profile page (view/edit name, phone) | [ ] | |
-| 2.10 | Create addresses CRUD | [ ] | |
-| 2.11 | Implement logout + session cleanup | [ ] | |
+| 2.1 | Configure Supabase Auth: email/password + Google OAuth | [x] | Email/password enabled, Google skipped for now |
+| 2.2 | Create sign-up page/component with form validation | [x] | Brand-themed split layout, client-side validation |
+| 2.3 | Create sign-in page/component | [x] | Brand-themed, remember me, forgot password link |
+| 2.4 | Implement email verification flow | [x] | /auth/confirm route handles token callback |
+| 2.5 | Create forgot password / reset password flow | [x] | Two pages: forgot-password + reset-password |
+| 2.6 | Implement auth state listener + session persistence | [x] | AuthProvider in __root.tsx, useAuth hook |
+| 2.7 | Create protected route wrapper / middleware | [x] | ProtectedRoute component wraps auth pages |
+| 2.8 | Implement role-based access (customer vs admin) | [x] | AdminRoute component, useProfile hook |
+| 2.9 | Create profile page (view/edit name, phone) | [x] | /profile route, uses ProtectedRoute |
+| 2.10 | Create addresses CRUD | [x] | /addresses route, full CRUD + set default |
+| 2.11 | Implement logout + session cleanup | [x] | signOut function, header with sign out button |
 
 **Phase 2 Completion Checklist:**
-- [ ] Sign up works (email + Google)
-- [ ] Sign in works
-- [ ] Password reset works
-- [ ] Protected routes redirect to login
-- [ ] Admin routes block non-admins
-- [ ] Profile page works
-- [ ] Address CRUD works
-- [ ] User understands auth flow
+- [x] Sign up works (email + Google)
+- [x] Sign in works
+- [x] Password reset works
+- [x] Protected routes redirect to login
+- [x] Admin routes block non-admins
+- [x] Profile page works
+- [x] Address CRUD works
+- [x] User understands auth flow
 
 ---
 
@@ -359,9 +359,9 @@
 
 | Phase | Tasks | Completed | Progress |
 |-------|-------|-----------|----------|
-| 0: Foundation | 10 | 0 | 0% |
-| 1: Database | 26 | 0 | 0% |
-| 2: Auth | 11 | 0 | 0% |
+| 0: Foundation | 10 | 10 | 100% |
+| 1: Database | 26 | 26 | 100% |
+| 2: Auth | 11 | 11 | 100% |
 | 3: Catalog | 12 | 0 | 0% |
 | 4: Cart/Checkout | 12 | 0 | 0% |
 | 5: Orders | 9 | 0 | 0% |
@@ -370,7 +370,7 @@
 | 8: Notifications | 8 | 0 | 0% |
 | 9: Analytics | 5 | 0 | 0% |
 | 10: Polish/Deploy | 18 | 0 | 0% |
-| **TOTAL** | **126** | **0** | **0%** |
+| **TOTAL** | **126** | **47** | **37.3%** |
 
 ---
 

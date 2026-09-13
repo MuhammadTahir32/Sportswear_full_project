@@ -27,6 +27,12 @@ export function Header() {
             >
               Profile
             </Link>
+            <Link
+              to="/addresses"
+              className="text-sm font-semibold uppercase tracking-wider text-brand-gray-400 hover:text-brand-white"
+            >
+              Addresses
+            </Link>
             <button
               onClick={handleSignOut}
               className="text-sm font-semibold uppercase tracking-wider text-brand-gray-400 hover:text-brand-white"
