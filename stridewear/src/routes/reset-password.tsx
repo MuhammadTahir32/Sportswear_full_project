@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { supabase } from '#/lib/supabase'
 import { Button } from '#/components/ui/button'
@@ -6,21 +6,12 @@ import { Input } from '#/components/ui/input'
 
 export const Route = createFileRoute('/reset-password')({ component: ResetPassword })
 
-function ResetPassword() {
-  const navigate = useNavigate()
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [error, setError] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
-  const [success, setSuccess] = useState(false)
-  const [isValidToken, setIsValidToken] = useState<boolean | null>(null)
-
-  useEffect(() => {
+function useResetToken() {
+  return useMemo(() => {
     const hash = window.location.hash
 
     if (!hash) {
-      setIsValidToken(false)
-      return
+      return { valid: false as const }
     }
 
     const params = new URLSearchParams(hash.substring(1))
@@ -28,20 +19,79 @@ function ResetPassword() {
     const refreshToken = params.get('refresh_token')
 
     if (!accessToken || !refreshToken) {
-      setIsValidToken(false)
-      return
+      return { valid: false as const }
     }
 
+    return { valid: true as const, accessToken, refreshToken }
+  }, [])
+}
+
+function ResetPassword() {
+  const token = useResetToken()
+
+  if (!token.valid) {
+    return <InvalidLink />
+  }
+
+  return <ResetForm accessToken={token.accessToken} refreshToken={token.refreshToken} />
+}
+
+function InvalidLink() {
+  return (
+    <main className="flex min-h-screen">
+      <div className="hidden w-1/2 items-center justify-center bg-brand-black lg:flex">
+        <div className="text-center">
+          <span className="inline-block bg-brand-lime px-4 py-2 text-sm font-bold uppercase tracking-widest text-brand-black">
+            StrideWear
+          </span>
+        </div>
+      </div>
+
+      <div className="flex w-full items-center justify-center bg-brand-gray-50 px-6 lg:w-1/2">
+        <div className="w-full max-w-md text-center">
+          <h1 className="font-display text-4xl uppercase text-brand-black">
+            Invalid Link
+          </h1>
+          <p className="mt-4 text-brand-gray-400">
+            This password reset link is invalid or has expired.
+          </p>
+          <Link to="/forgot-password" className="mt-8 inline-block">
+            <Button className="bg-brand-lime text-brand-black hover:bg-brand-lime-dark">
+              Request New Link
+            </Button>
+          </Link>
+        </div>
+      </div>
+    </main>
+  )
+}
+
+function ResetForm({
+  accessToken,
+  refreshToken,
+}: {
+  accessToken: string
+  refreshToken: string
+}) {
+  const navigate = useNavigate()
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [error, setError] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [success, setSuccess] = useState(false)
+  const [sessionReady, setSessionReady] = useState(false)
+
+  useEffect(() => {
     supabase.auth
       .setSession({ access_token: accessToken, refresh_token: refreshToken })
       .then(({ error }) => {
         if (error) {
-          setIsValidToken(false)
+          setError('Failed to verify reset link. Please request a new one.')
         } else {
-          setIsValidToken(true)
+          setSessionReady(true)
         }
       })
-  }, [])
+  }, [accessToken, refreshToken])
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -71,42 +121,18 @@ function ResetPassword() {
     setSuccess(true)
   }
 
-  if (isValidToken === null) {
+  if (!sessionReady && !error) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-brand-gray-50">
-        <p className="text-brand-gray-400">Verifying reset link...</p>
+        <p className="font-display text-sm uppercase tracking-widest text-brand-gray-400">
+          Verifying reset link...
+        </p>
       </main>
     )
   }
 
-  if (isValidToken === false) {
-    return (
-      <main className="flex min-h-screen">
-        <div className="hidden w-1/2 items-center justify-center bg-brand-black lg:flex">
-          <div className="text-center">
-            <span className="inline-block bg-brand-lime px-4 py-2 text-sm font-bold uppercase tracking-widest text-brand-black">
-              StrideWear
-            </span>
-          </div>
-        </div>
-
-        <div className="flex w-full items-center justify-center bg-brand-gray-50 px-6 lg:w-1/2">
-          <div className="w-full max-w-md text-center">
-            <h1 className="font-display text-4xl uppercase text-brand-black">
-              Invalid Link
-            </h1>
-            <p className="mt-4 text-brand-gray-400">
-              This password reset link is invalid or has expired.
-            </p>
-            <Link to="/forgot-password" className="mt-8 inline-block">
-              <Button className="bg-brand-lime text-brand-black hover:bg-brand-lime-dark">
-                Request New Link
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </main>
-    )
+  if (error && !sessionReady) {
+    return <InvalidLink />
   }
 
   if (success) {

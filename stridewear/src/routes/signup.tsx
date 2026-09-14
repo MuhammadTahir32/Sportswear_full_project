@@ -36,6 +36,7 @@ function SignUp() {
       password,
       options: {
         data: { full_name: fullName },
+        emailRedirectTo: 'http://localhost:3000/auth/confirm',
       },
     })
 
@@ -64,11 +65,26 @@ function SignUp() {
             <span className="text-brand-lime">{email}</span>. Click the link to
             activate your account.
           </p>
-          <Link to="/signin" className="mt-8 inline-block">
-            <Button variant="secondary">
-              Back to Sign In
-            </Button>
-          </Link>
+          <div className="mt-8 flex justify-center gap-4">
+            <Link to="/signin">
+              <Button variant="secondary">
+                Back to Sign In
+              </Button>
+            </Link>
+            <button
+              onClick={() => {
+                setSuccess(false)
+                setEmail('')
+                setPassword('')
+                setConfirmPassword('')
+                setFullName('')
+              }}
+            >
+              <Button className="bg-brand-lime text-brand-black hover:bg-brand-lime-dark">
+                Sign Up Another Email
+              </Button>
+            </button>
+          </div>
         </div>
       </main>
     )

@@ -18,6 +18,15 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined)
 
+function fetchProfile(userId: string, setProfile: (p: Profile | null) => void) {
+  supabase
+    .from('profiles')
+    .select('full_name, phone, role')
+    .eq('id', userId)
+    .single()
+    .then(({ data }) => setProfile(data))
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [session, setSession] = useState<Session | null>(null)
@@ -31,7 +40,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setIsLoading(false)
 
       if (session?.user) {
-        fetchProfile(session.user.id)
+        fetchProfile(session.user.id, setProfile)
       }
     })
 
@@ -43,7 +52,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setIsLoading(false)
 
       if (session?.user) {
-        fetchProfile(session.user.id)
+        fetchProfile(session.user.id, setProfile)
       } else {
         setProfile(null)
       }
@@ -51,15 +60,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     return () => subscription.unsubscribe()
   }, [])
-
-  function fetchProfile(userId: string) {
-    supabase
-      .from('profiles')
-      .select('full_name, phone, role')
-      .eq('id', userId)
-      .single()
-      .then(({ data }) => setProfile(data))
-  }
 
   return (
     <AuthContext.Provider value={{ user, session, isLoading, profile }}>
