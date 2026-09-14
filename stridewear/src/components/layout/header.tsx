@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { useAuth, signOut } from '#/lib/auth'
 import { useCategories } from '#/hooks/use-products'
@@ -8,17 +8,39 @@ export function Header() {
   const navigate = useNavigate()
   const { data: categories } = useCategories()
   const [searchQuery, setSearchQuery] = useState('')
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => {
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current)
+    }
+  }, [])
 
   async function handleSignOut() {
     await signOut()
     navigate({ to: '/signin' })
   }
 
-  function handleSearch(e: React.FormEvent) {
+  function handleSearchChange(value: string) {
+    setSearchQuery(value)
+
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+
+    debounceRef.current = setTimeout(() => {
+      if (value.trim()) {
+        navigate({ to: '/products', search: { page: 1, sort: 'newest', search: value.trim() } })
+      } else {
+        navigate({ to: '/products', search: { page: 1, sort: 'newest' } })
+      }
+    }, 300)
+  }
+
+  function handleSearchSubmit(e: React.FormEvent) {
     e.preventDefault()
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+
     if (searchQuery.trim()) {
-      navigate({ to: '/products', search: { page: 1, sort: 'newest' } })
-      setSearchQuery('')
+      navigate({ to: '/products', search: { page: 1, sort: 'newest', search: searchQuery.trim() } })
     }
   }
 
@@ -52,12 +74,12 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-4">
-          <form onSubmit={handleSearch} className="hidden sm:block">
+          <form onSubmit={handleSearchSubmit} className="hidden sm:block">
             <div className="relative">
               <input
                 type="text"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => handleSearchChange(e.target.value)}
                 placeholder="Search"
                 className="w-40 rounded-full border border-brand-gray-100 bg-brand-gray-50 px-4 py-1.5 text-xs text-brand-black placeholder-brand-gray-400 focus:border-brand-lime focus:outline-none lg:w-56"
               />

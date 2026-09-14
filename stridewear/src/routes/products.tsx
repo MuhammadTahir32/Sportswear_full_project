@@ -15,6 +15,7 @@ const productsSearchSchema = z.object({
   gender: z.string().optional(),
   minPrice: z.coerce.number().optional(),
   maxPrice: z.coerce.number().optional(),
+  search: z.string().optional(),
 })
 
 export const Route = createFileRoute('/products')({
@@ -23,7 +24,7 @@ export const Route = createFileRoute('/products')({
 })
 
 function ProductsPage() {
-  const { page, sort, category, gender, minPrice, maxPrice } = Route.useSearch()
+  const { page, sort, category, gender, minPrice, maxPrice, search } = Route.useSearch()
   const navigate = useNavigate()
 
   const { data, isLoading, error } = useProducts({
@@ -33,6 +34,7 @@ function ProductsPage() {
     gender,
     minPrice,
     maxPrice,
+    search,
   })
 
   const sortOptions = [
@@ -43,7 +45,7 @@ function ProductsPage() {
   ]
 
   function buildSearch(updates: Record<string, unknown>) {
-    return { page: 1, sort, category, gender, minPrice, maxPrice, ...updates }
+    return { page: 1, sort, category, gender, minPrice, maxPrice, search, ...updates }
   }
 
   function handlePageChange(newPage: number) {
@@ -114,7 +116,7 @@ function ProductsPage() {
     <div className="mx-auto max-w-7xl px-4 py-8">
       <div className="mb-8">
         <h1 className="font-display text-4xl uppercase text-brand-black">
-          {category ? category.replace(/-/g, ' ') : 'All Products'}
+          {search ? `Search: "${search}"` : category ? category.replace(/-/g, ' ') : 'All Products'}
         </h1>
       </div>
 
