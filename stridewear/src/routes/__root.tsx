@@ -1,11 +1,13 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
+import { HeadContent, Scripts, createRootRoute, useRouterState } from '@tanstack/react-router'
 
 import { AuthProvider } from '../lib/auth'
 import { Header } from '../components/layout/header'
 import appCss from '../styles.css?url'
 
 const queryClient = new QueryClient()
+
+const AUTH_ROUTES = ['/signin', '/signup', '/forgot-password', '/reset-password', '/auth/confirm']
 
 export const Route = createRootRoute({
   head: () => ({
@@ -37,6 +39,10 @@ export const Route = createRootRoute({
 })
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+  const routerState = useRouterState()
+  const currentPath = routerState.location.pathname
+  const showHeader = !AUTH_ROUTES.includes(currentPath)
+
   return (
     <html lang="en">
       <head>
@@ -45,7 +51,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <body>
         <QueryClientProvider client={queryClient}>
           <AuthProvider>
-            <Header />
+            {showHeader && <Header />}
             {children}
           </AuthProvider>
         </QueryClientProvider>
