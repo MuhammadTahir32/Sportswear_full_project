@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { Outlet, createFileRoute, useNavigate, useRouterState } from '@tanstack/react-router'
 import { z } from 'zod'
 import { useProducts } from '#/hooks/use-products'
 import { ProductCard } from '#/components/ui/product-card'
@@ -24,6 +24,13 @@ export const Route = createFileRoute('/products')({
 })
 
 function ProductsPage() {
+  const routerState = useRouterState()
+  const isChildRoute = routerState.location.pathname !== '/products'
+
+  if (isChildRoute) {
+    return <Outlet />
+  }
+
   const { page, sort, category, gender, minPrice, maxPrice, search } = Route.useSearch()
   const navigate = useNavigate()
 
