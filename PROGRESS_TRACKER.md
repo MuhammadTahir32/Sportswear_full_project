@@ -6,10 +6,10 @@
 |--------|-------|
 | **Total Phases** | 11 (Phase 0-10) |
 | **Total Tasks** | 129 |
-| **Completed** | 50 |
+| **Completed** | 61 |
 | **In Progress** | 0 |
-| **Remaining** | 79 |
-| **Overall Progress** | 38.8% |
+| **Remaining** | 68 |
+| **Overall Progress** | 47.3% |
 | **Current Phase** | Phase 3: Product Catalog |
 | **Last Updated** | September 14, 2026 |
 
@@ -134,32 +134,42 @@
 
 ## PHASE 3: Product Catalog (Storefront)
 
-**Status:** Not Started
-**Progress:** 0/12 tasks (0%)
+**Status:** In Progress
+**Progress:** 11/12 tasks (92%)
 **Goal:** Browse, filter, search, view product details
 
 | ID | Task | Status | Notes |
 |----|------|--------|-------|
-| 3.1 | Create TanStack Query hooks: useProducts, useProductBySlug | [ ] | |
-| 3.2 | Build product listing page with pagination | [ ] | |
-| 3.3 | Build ProductCard component | [ ] | |
-| 3.4 | Build category navigation / sidebar | [ ] | |
-| 3.5 | Implement filter UI: size, color, price range, gender | [ ] | |
-| 3.6 | Implement sort: price, newest, popularity | [ ] | |
-| 3.7 | Implement debounced search with TanStack Query | [ ] | |
-| 3.8 | Build product detail page: image gallery, variant selector, stock status | [ ] | |
-| 3.9 | Build variant selector component (size × color matrix) | [ ] | |
-| 3.10 | Display reviews section on product detail page | [ ] | |
-| 3.11 | Implement size guide modal/drawer | [ ] | |
+| 3.1 | Create TanStack Query hooks: useProducts, useProductBySlug | [x] | Installed @tanstack/react-query, QueryClientProvider, useProducts/useProductBySlug hooks, getImageUrl utility |
+| 3.2 | Build product listing page with pagination | [x] | /products route with Zod search schema, responsive grid, sort dropdown, numbered pagination |
+| 3.3 | Build ProductCard component | [x] | ProductCard, StarRating, Skeleton components |
+| 3.3.1 | Build full storefront navbar (Shop link, category links, search bar, cart icon) | [x] | Custom task: header.tsx with STRIDEWEAR logo, category links from DB, search bar, cart icon, auth links |
+| 3.4 | Build category navigation / sidebar | [x] | CategorySidebar fetching from DB, highlights active category |
+| 3.5 | Implement filter UI: size, color, price range, gender | [x] | FilterSidebar with gender buttons, price presets, min/max inputs; ActiveFilters removable tags |
+| 3.6 | Implement sort: price, newest, popularity | [x] | 4 sort options: Newest, Price Low→High, Price High→Low, Top Rated |
+| 3.7 | Implement debounced search with TanStack Query | [x] | Debounced search (300ms) in header, search param in URL, title shows search query |
+| 3.8 | Build product detail page: image gallery, variant selector, stock status | [x] | products.$slug.tsx with breadcrumbs, image gallery, product info, loading/error states |
+| 3.9 | Build variant selector component (size × color matrix) | [x] | VariantSelector with color/size buttons, stock awareness, dynamic price, Add to Cart button |
+| 3.10 | Display reviews section on product detail page | [x] | useReviews hook, ReviewList component with avg rating, individual review cards |
+| 3.11 | Implement size guide modal/drawer | [x] | Reusable Modal component, SizeGuide with Men's/Women's measurement tables, gender-based display |
 | 3.12 | SEO: SSR meta tags, sitemap.xml generation | [ ] | |
 
+**Bug Fixes (during Phase 3):**
+- [x] Fixed price filter NULL sale_price — client-side filtering using effectivePrice = sale_price ?? base_price
+- [x] Fixed active filter tags — combined min/max into single "price" tag with preset labels ($150+, Under $50, etc.)
+- [x] Fixed products.$slug child route — added Outlet rendering for nested routes
+- [x] Fixed hooks order error — moved all hooks before early return in products.tsx
+- [x] Fixed variant-selector.tsx typo — newColor → selectedColor
+
 **Phase 3 Completion Checklist:**
-- [ ] Product listing loads with products
-- [ ] Filters work correctly
-- [ ] Sort works correctly
-- [ ] Search works with debounce
-- [ ] Product detail page works
-- [ ] Variant selection works
+- [x] Product listing loads with products
+- [x] Filters work correctly
+- [x] Sort works correctly
+- [x] Search works with debounce
+- [x] Product detail page works
+- [x] Variant selection works
+- [x] Size guide modal works
+- [ ] SEO meta tags work (pending)
 - [ ] User understands TanStack Query
 
 ---
@@ -374,7 +384,7 @@
 | 0: Foundation | 10 | 10 | 100% |
 | 1: Database | 29 | 29 | 100% |
 | 2: Auth | 11 | 11 | 100% |
-| 3: Catalog | 12 | 0 | 0% |
+| 3: Catalog | 12 | 11 | 92% |
 | 4: Cart/Checkout | 12 | 0 | 0% |
 | 5: Orders | 9 | 0 | 0% |
 | 6: Admin Products | 9 | 0 | 0% |
@@ -382,7 +392,7 @@
 | 8: Notifications | 8 | 0 | 0% |
 | 9: Analytics | 5 | 0 | 0% |
 | 10: Polish/Deploy | 18 | 0 | 0% |
-| **TOTAL** | **129** | **50** | **38.8%** |
+| **TOTAL** | **129** | **61** | **47.3%** |
 
 ---
 

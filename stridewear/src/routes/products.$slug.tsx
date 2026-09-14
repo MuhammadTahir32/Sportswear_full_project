@@ -6,6 +6,7 @@ import { StarRating } from '#/components/ui/star-rating'
 import { Skeleton } from '#/components/ui/skeleton'
 import { VariantSelector } from '#/components/ui/variant-selector'
 import { ReviewList } from '#/components/ui/review-list'
+import { SizeGuide } from '#/components/ui/size-guide'
 import type { Tables } from '#/lib/database.types'
 
 export const Route = createFileRoute('/products/$slug')({
@@ -184,6 +185,12 @@ function ProductDetailPage() {
           )}
 
           <div className="mt-6">
+            <div className="mb-4 flex items-center justify-between">
+              <span className="text-xs font-bold uppercase tracking-widest text-brand-black">
+                Select Options
+              </span>
+              <SizeGuide gender={product.gender} />
+            </div>
             <VariantSelector
               variants={product.product_variants}
               onVariantSelect={setSelectedVariant}
