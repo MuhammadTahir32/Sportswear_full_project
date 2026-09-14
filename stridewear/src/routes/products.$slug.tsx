@@ -209,7 +209,7 @@ function ProductDetailPage() {
               <span className="text-xs font-bold uppercase tracking-widest text-brand-black">
                 Select Options
               </span>
-              <SizeGuide gender={product.gender} />
+              <SizeGuide gender={product.gender} category={product.category?.name} productName={product.name} />
             </div>
             <VariantSelector
               variants={product.product_variants}

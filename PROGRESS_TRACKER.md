@@ -6,10 +6,10 @@
 |--------|-------|
 | **Total Phases** | 11 (Phase 0-10) |
 | **Total Tasks** | 129 |
-| **Completed** | 62 |
+| **Completed** | 63 |
 | **In Progress** | 0 |
-| **Remaining** | 67 |
-| **Overall Progress** | 48.1% |
+| **Remaining** | 66 |
+| **Overall Progress** | 48.8% |
 | **Current Phase** | Phase 4: Cart & Checkout |
 | **Last Updated** | September 14, 2026 |
 
@@ -177,13 +177,16 @@
 
 ## PHASE 4: Cart & Checkout
 
-**Status:** Not Started
-**Progress:** 0/12 tasks (0%)
+**Status:** In Progress
+**Progress:** 1/12 tasks (8%)
 **Goal:** Full cart management + Cash on Delivery (COD) checkout flow
 
 | ID | Task | Status | Notes |
 |----|------|--------|-------|
-| 4.1 | Create useCart hook (read, add, update, remove) | [ ] | |
+| 4.1 | Create useCart hook (read, add, update, remove) | [x] | useCart hook with addItem, updateQuantity, removeItem, clearCart. Fetches joined variant+product data. TanStack Query with ['cart'] key. |
+
+**Bug Fixes (Phase 3 carryover):**
+- [x] Fixed size guide — was showing apparel sizes for shoes/boots. Now detects footwear category and shows US/EU/UK foot length chart instead.
 | 4.2 | Build cart page/drawer UI | [ ] | |
 | 4.3 | Implement cart persistence (DB for logged-in, local state for guest) | [ ] | |
 | 4.4 | Build cart item component | [ ] | |
@@ -386,14 +389,14 @@
 | 1: Database | 29 | 29 | 100% |
 | 2: Auth | 11 | 11 | 100% |
 | 3: Catalog | 12 | 12 | 100% |
-| 4: Cart/Checkout | 12 | 0 | 0% |
+| 4: Cart/Checkout | 12 | 1 | 8% |
 | 5: Orders | 9 | 0 | 0% |
 | 6: Admin Products | 9 | 0 | 0% |
 | 7: Reviews/Wishlist | 6 | 0 | 0% |
 | 8: Notifications | 8 | 0 | 0% |
 | 9: Analytics | 5 | 0 | 0% |
 | 10: Polish/Deploy | 18 | 0 | 0% |
-| **TOTAL** | **129** | **62** | **48.1%** |
+| **TOTAL** | **129** | **63** | **48.8%** |
 
 ---
 
