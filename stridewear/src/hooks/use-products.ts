@@ -61,7 +61,15 @@ export function useProducts(filters: ProductFilters = {}) {
         .eq('status', 'active')
 
       if (categorySlug) {
-        query = query.eq('categories.slug', categorySlug)
+        const { data: catData } = await supabase
+          .from('categories')
+          .select('id')
+          .eq('slug', categorySlug)
+          .single()
+
+        if (catData) {
+          query = query.eq('category_id', catData.id)
+        }
       }
 
       if (gender) {
