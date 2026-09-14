@@ -6,10 +6,10 @@
 |--------|-------|
 | **Total Phases** | 11 (Phase 0-10) |
 | **Total Tasks** | 129 |
-| **Completed** | 63 |
+| **Completed** | 67 |
 | **In Progress** | 0 |
-| **Remaining** | 66 |
-| **Overall Progress** | 48.8% |
+| **Remaining** | 62 |
+| **Overall Progress** | 51.9% |
 | **Current Phase** | Phase 4: Cart & Checkout |
 | **Last Updated** | September 14, 2026 |
 
@@ -184,12 +184,9 @@
 | ID | Task | Status | Notes |
 |----|------|--------|-------|
 | 4.1 | Create useCart hook (read, add, update, remove) | [x] | useCart hook with addItem, updateQuantity, removeItem, clearCart. Fetches joined variant+product data. TanStack Query with ['cart'] key. |
-
-**Bug Fixes (Phase 3 carryover):**
-- [x] Fixed size guide — was showing apparel sizes for shoes/boots. Now detects footwear category and shows US/EU/UK foot length chart instead.
-| 4.2 | Build cart page/drawer UI | [ ] | |
-| 4.3 | Implement cart persistence (DB for logged-in, local state for guest) | [ ] | |
-| 4.4 | Build cart item component | [ ] | |
+| 4.2 | Build cart page/drawer UI | [x] | /cart route with CartItem component, quantity controls, subtotal, empty/auth states. Header cart icon links to /cart with live item count badge. |
+| 4.3 | Implement cart persistence (DB for logged-in, local state for guest) | [x] | Guest cart in localStorage, logged-in cart in DB. Auto-merge on login. Guest cart fetches variant details for display. |
+| 4.4 | Build cart item component | [x] | CartItem component: image, name, size/color, qty controls, line total, remove button |
 | 4.5 | Implement subtotal, tax, shipping, discount calculation | [ ] | |
 | 4.6 | Build coupon/promo code input + validation | [ ] | |
 | 4.7 | Build checkout page: shipping address step | [ ] | |
@@ -389,14 +386,14 @@
 | 1: Database | 29 | 29 | 100% |
 | 2: Auth | 11 | 11 | 100% |
 | 3: Catalog | 12 | 12 | 100% |
-| 4: Cart/Checkout | 12 | 1 | 8% |
+| 4: Cart/Checkout | 12 | 5 | 42% |
 | 5: Orders | 9 | 0 | 0% |
 | 6: Admin Products | 9 | 0 | 0% |
 | 7: Reviews/Wishlist | 6 | 0 | 0% |
 | 8: Notifications | 8 | 0 | 0% |
 | 9: Analytics | 5 | 0 | 0% |
 | 10: Polish/Deploy | 18 | 0 | 0% |
-| **TOTAL** | **129** | **63** | **48.8%** |
+| **TOTAL** | **129** | **67** | **51.9%** |
 
 ---
 

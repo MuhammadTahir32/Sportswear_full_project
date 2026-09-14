@@ -2,11 +2,13 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { useAuth, signOut } from '#/lib/auth'
 import { useCategories } from '#/hooks/use-products'
+import { useCart } from '#/hooks/use-cart'
 
 export function Header() {
   const { user, isLoading } = useAuth()
   const navigate = useNavigate()
   const { data: categories } = useCategories()
+  const { itemCount } = useCart()
   const [searchQuery, setSearchQuery] = useState('')
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -114,14 +116,19 @@ export function Header() {
                 </svg>
               </Link>
 
-              <button className="relative text-brand-gray-400 hover:text-brand-black">
+              <Link
+                to="/cart"
+                className="relative text-brand-gray-400 hover:text-brand-black"
+              >
                 <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                 </svg>
-                <span className="absolute -right-1.5 -top-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-brand-lime text-[9px] font-bold text-brand-black">
-                  0
-                </span>
-              </button>
+                {itemCount > 0 && (
+                  <span className="absolute -right-1.5 -top-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-brand-lime text-[9px] font-bold text-brand-black">
+                    {itemCount > 99 ? '99+' : itemCount}
+                  </span>
+                )}
+              </Link>
 
               <button
                 onClick={handleSignOut}
