@@ -26,11 +26,6 @@ export const Route = createFileRoute('/products')({
 function ProductsPage() {
   const routerState = useRouterState()
   const isChildRoute = routerState.location.pathname !== '/products'
-
-  if (isChildRoute) {
-    return <Outlet />
-  }
-
   const { page, sort, category, gender, minPrice, maxPrice, search } = Route.useSearch()
   const navigate = useNavigate()
 
@@ -43,6 +38,10 @@ function ProductsPage() {
     maxPrice,
     search,
   })
+
+  if (isChildRoute) {
+    return <Outlet />
+  }
 
   const sortOptions = [
     { value: 'newest' as const, label: 'Newest' },
