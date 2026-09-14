@@ -4,6 +4,8 @@ import { useProductBySlug } from '#/hooks/use-products'
 import { getImageUrl } from '#/lib/image'
 import { StarRating } from '#/components/ui/star-rating'
 import { Skeleton } from '#/components/ui/skeleton'
+import { VariantSelector } from '#/components/ui/variant-selector'
+import type { Tables } from '#/lib/database.types'
 
 export const Route = createFileRoute('/products/$slug')({
   component: ProductDetailPage,
@@ -13,6 +15,7 @@ function ProductDetailPage() {
   const { slug } = Route.useParams()
   const { data: product, isLoading, error } = useProductBySlug(slug)
   const [selectedImageIndex, setSelectedImageIndex] = useState(0)
+  const [selectedVariant, setSelectedVariant] = useState<Tables<'product_variants'> | null>(null)
 
   if (isLoading) {
     return (
@@ -59,8 +62,11 @@ function ProductDetailPage() {
   }
 
   const images = product.product_images.sort((a, b) => a.position - b.position)
-  const displayPrice = product.sale_price ?? product.base_price
-  const hasDiscount = product.sale_price !== null && product.sale_price < product.base_price
+  const baseDisplayPrice = product.sale_price ?? product.base_price
+  const displayPrice = selectedVariant?.price_override ?? baseDisplayPrice
+  const hasDiscount = selectedVariant?.price_override
+    ? selectedVariant.price_override < product.base_price
+    : product.sale_price !== null && product.sale_price < product.base_price
   const totalStock = product.product_variants.reduce((sum, v) => sum + v.stock_qty, 0)
   const uniqueSizes = [...new Set(product.product_variants.map((v) => v.size))]
   const uniqueColors = [...new Set(product.product_variants.map((v) => v.color))]
@@ -176,10 +182,11 @@ function ProductDetailPage() {
             </p>
           )}
 
-          <div className="mt-4 rounded-xl border border-brand-gray-100 bg-brand-gray-50 p-4">
-            <p className="text-xs text-brand-gray-400">
-              Select size and color below to add to cart
-            </p>
+          <div className="mt-6">
+            <VariantSelector
+              variants={product.product_variants}
+              onVariantSelect={setSelectedVariant}
+            />
           </div>
         </div>
       </div>
