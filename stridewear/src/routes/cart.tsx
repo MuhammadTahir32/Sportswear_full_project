@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useCart } from '#/hooks/use-cart'
 import { useAuth } from '#/lib/auth'
+import { calculateCart, formatPrice } from '#/lib/cart-utils'
 import { CartItem } from '#/components/ui/cart-item'
 import { Skeleton } from '#/components/ui/skeleton'
 
@@ -11,13 +12,7 @@ export const Route = createFileRoute('/cart')({
 function CartPage() {
   const { items, isLoading, itemCount } = useCart()
   const { user } = useAuth()
-
-  const subtotal = items.reduce((sum, item) => {
-    const price = item.product_variants.price_override
-      ?? item.product_variants.products.sale_price
-      ?? item.product_variants.products.base_price
-    return sum + price * item.quantity
-  }, 0)
+  const calculation = calculateCart(items)
 
   if (isLoading) {
     return (
@@ -92,15 +87,41 @@ function CartPage() {
       </div>
 
       <div className="mt-6 border-t border-brand-gray-100 pt-6">
-        <div className="flex items-center justify-between">
-          <span className="text-sm text-brand-gray-400">Subtotal</span>
-          <span className="text-lg font-bold text-brand-black">
-            ${subtotal.toFixed(2)}
-          </span>
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center justify-between">
+            <span className="text-sm text-brand-gray-400">Subtotal</span>
+            <span className="text-sm font-semibold text-brand-black">
+              {formatPrice(calculation.subtotal)}
+            </span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-sm text-brand-gray-400">Tax (8%)</span>
+            <span className="text-sm font-semibold text-brand-black">
+              {formatPrice(calculation.tax)}
+            </span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-sm text-brand-gray-400">Shipping</span>
+            <span className="text-sm font-semibold text-brand-black">
+              {calculation.shipping === 0 ? (
+                <span className="text-green-600">Free</span>
+              ) : (
+                formatPrice(calculation.shipping)
+              )}
+            </span>
+          </div>
+          {calculation.shipping > 0 && (
+            <p className="text-xs text-brand-gray-400">
+              Free shipping on orders over $100
+            </p>
+          )}
+          <div className="mt-2 flex items-center justify-between border-t border-brand-gray-100 pt-2">
+            <span className="text-base font-bold text-brand-black">Total</span>
+            <span className="text-lg font-bold text-brand-black">
+              {formatPrice(calculation.total)}
+            </span>
+          </div>
         </div>
-        <p className="mt-1 text-xs text-brand-gray-400">
-          Shipping & taxes calculated at checkout
-        </p>
 
         <Link
           to="/checkout"
