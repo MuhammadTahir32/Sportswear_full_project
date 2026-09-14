@@ -5,11 +5,11 @@
 | Metric | Value |
 |--------|-------|
 | **Total Phases** | 11 (Phase 0-10) |
-| **Total Tasks** | 126 |
-| **Completed** | 47 |
+| **Total Tasks** | 129 |
+| **Completed** | 50 |
 | **In Progress** | 0 |
 | **Remaining** | 79 |
-| **Overall Progress** | 37.3% |
+| **Overall Progress** | 38.8% |
 | **Current Phase** | Phase 3: Product Catalog |
 | **Last Updated** | September 14, 2026 |
 
@@ -35,18 +35,18 @@
 | 0.10 | Create Supabase client singleton (lib/supabase.ts) | [x] | Created with Database types |
 
 **Phase 0 Completion Checklist:**
-- [ ] `pnpm dev` runs without errors
-- [ ] App loads at localhost:3000
-- [ ] `pnpm typecheck` passes
-- [ ] `pnpm lint` passes
-- [ ] User confirms understanding
+- [x] `pnpm dev` runs without errors
+- [x] App loads at localhost:3000
+- [x] `pnpm typecheck` passes
+- [x] `pnpm lint` passes
+- [x] User confirms understanding
 
 ---
 
 ## PHASE 1: Database & Schema
 
 **Status:** Complete
-**Progress:** 26/26 tasks (100%)
+**Progress:** 29/29 tasks (100%)
 **Goal:** All tables, indexes, RLS policies, and types generated
 
 | ID | Task | Status | Notes |
@@ -77,14 +77,22 @@
 | 1.24 | Create trigger: avg_rating recalculation | [x] | 014_avg_rating_trigger.sql |
 | 1.25 | Generate Supabase TypeScript types | [x] | Generated via `supabase gen types typescript --local` |
 | 1.26 | Seed script: sample categories, products, variants, images | [x] | 015_seed_data.sql |
+| 1.27 | Fix profiles RLS infinite recursion | [x] | 016_fix_profiles_rls_recursion.sql |
+| 1.28 | Reset profiles RLS policies | [x] | 017_reset_profiles_rls.sql |
+| 1.29 | Fix profiles trigger + backfill existing users | [x] | 018_fix_profiles_trigger_and_backfill.sql |
 
 **Phase 1 Completion Checklist:**
-- [ ] All migrations run without errors
-- [ ] `supabase db reset` works locally
-- [ ] Tables visible in Supabase dashboard
-- [ ] TypeScript types generated
-- [ ] Seed data loaded
-- [ ] User understands RLS policies
+- [x] All migrations run without errors
+- [x] `supabase db reset` works locally
+- [x] Tables visible in Supabase dashboard
+- [x] TypeScript types generated
+- [x] Seed data loaded
+- [x] User understands RLS policies
+
+**Bugfix Migrations (post-Phase 1):**
+- [x] 016_fix_profiles_rls_recursion.sql — Fixed infinite recursion in admin SELECT policy (was self-referencing profiles table)
+- [x] 017_reset_profiles_rls.sql — Complete reset of profiles RLS: dropped all policies, recreated clean set (view own, update own, insert own)
+- [x] 018_fix_profiles_trigger_and_backfill.sql — Recreated handle_new_user() trigger + backfilled profiles for existing auth.users
 
 ---
 
@@ -117,6 +125,10 @@
 - [x] Profile page works
 - [x] Address CRUD works
 - [x] User understands auth flow
+
+**Known Issues:**
+- Profiles RLS had infinite recursion bug (fixed via migrations 016-018)
+- Email delivery may be delayed on Supabase free tier (account confirmed successfully)
 
 ---
 
@@ -360,7 +372,7 @@
 | Phase | Tasks | Completed | Progress |
 |-------|-------|-----------|----------|
 | 0: Foundation | 10 | 10 | 100% |
-| 1: Database | 26 | 26 | 100% |
+| 1: Database | 29 | 29 | 100% |
 | 2: Auth | 11 | 11 | 100% |
 | 3: Catalog | 12 | 0 | 0% |
 | 4: Cart/Checkout | 12 | 0 | 0% |
@@ -370,7 +382,7 @@
 | 8: Notifications | 8 | 0 | 0% |
 | 9: Analytics | 5 | 0 | 0% |
 | 10: Polish/Deploy | 18 | 0 | 0% |
-| **TOTAL** | **126** | **47** | **37.3%** |
+| **TOTAL** | **129** | **50** | **38.8%** |
 
 ---
 
@@ -406,4 +418,4 @@ Track your understanding milestones:
 
 ---
 
-*Last Updated: September 12, 2026*
+*Last Updated: September 14, 2026*
