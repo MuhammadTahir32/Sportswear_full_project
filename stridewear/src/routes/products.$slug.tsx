@@ -5,6 +5,7 @@ import { getImageUrl } from '#/lib/image'
 import { StarRating } from '#/components/ui/star-rating'
 import { Skeleton } from '#/components/ui/skeleton'
 import { VariantSelector } from '#/components/ui/variant-selector'
+import { ReviewList } from '#/components/ui/review-list'
 import type { Tables } from '#/lib/database.types'
 
 export const Route = createFileRoute('/products/$slug')({
@@ -189,6 +190,13 @@ function ProductDetailPage() {
             />
           </div>
         </div>
+      </div>
+
+      <div className="mt-16 border-t border-brand-gray-100 pt-8">
+        <h2 className="mb-6 font-display text-2xl uppercase text-brand-black">
+          Reviews
+        </h2>
+        <ReviewList productId={product.id} />
       </div>
     </div>
   )
