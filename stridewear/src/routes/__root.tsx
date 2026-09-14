@@ -20,7 +20,27 @@ export const Route = createRootRoute({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'TanStack Start Starter',
+        title: 'StrideWear — Premium Sportswear & Athletic Apparel',
+      },
+      {
+        name: 'description',
+        content: 'Shop premium sportswear, athletic apparel, and streetwear. High-quality running shoes, hoodies, joggers, and accessories.',
+      },
+      {
+        property: 'og:title',
+        content: 'StrideWear — Premium Sportswear & Athletic Apparel',
+      },
+      {
+        property: 'og:description',
+        content: 'Shop premium sportswear, athletic apparel, and streetwear. High-quality running shoes, hoodies, joggers, and accessories.',
+      },
+      {
+        property: 'og:type',
+        content: 'website',
+      },
+      {
+        name: 'twitter:card',
+        content: 'summary_large_image',
       },
     ],
     links: [

@@ -6,11 +6,11 @@
 |--------|-------|
 | **Total Phases** | 11 (Phase 0-10) |
 | **Total Tasks** | 129 |
-| **Completed** | 61 |
+| **Completed** | 62 |
 | **In Progress** | 0 |
-| **Remaining** | 68 |
-| **Overall Progress** | 47.3% |
-| **Current Phase** | Phase 3: Product Catalog |
+| **Remaining** | 67 |
+| **Overall Progress** | 48.1% |
+| **Current Phase** | Phase 4: Cart & Checkout |
 | **Last Updated** | September 14, 2026 |
 
 ---
@@ -134,8 +134,8 @@
 
 ## PHASE 3: Product Catalog (Storefront)
 
-**Status:** In Progress
-**Progress:** 11/12 tasks (92%)
+**Status:** Complete
+**Progress:** 12/12 tasks (100%)
 **Goal:** Browse, filter, search, view product details
 
 | ID | Task | Status | Notes |
@@ -152,7 +152,7 @@
 | 3.9 | Build variant selector component (size × color matrix) | [x] | VariantSelector with color/size buttons, stock awareness, dynamic price, Add to Cart button |
 | 3.10 | Display reviews section on product detail page | [x] | useReviews hook, ReviewList component with avg rating, individual review cards |
 | 3.11 | Implement size guide modal/drawer | [x] | Reusable Modal component, SizeGuide with Men's/Women's measurement tables, gender-based display |
-| 3.12 | SEO: SSR meta tags, sitemap.xml generation | [ ] | |
+| 3.12 | SEO: SSR meta tags, sitemap.xml generation | [x] | Root meta tags (title, description, OG, Twitter), products page meta, dynamic product detail title, sitemap generator script |
 
 **Bug Fixes (during Phase 3):**
 - [x] Fixed price filter NULL sale_price — client-side filtering using effectivePrice = sale_price ?? base_price
@@ -169,7 +169,8 @@
 - [x] Product detail page works
 - [x] Variant selection works
 - [x] Size guide modal works
-- [ ] SEO meta tags work (pending)
+- [x] SEO meta tags work
+- [x] Sitemap generator works
 - [ ] User understands TanStack Query
 
 ---
@@ -384,7 +385,7 @@
 | 0: Foundation | 10 | 10 | 100% |
 | 1: Database | 29 | 29 | 100% |
 | 2: Auth | 11 | 11 | 100% |
-| 3: Catalog | 12 | 11 | 92% |
+| 3: Catalog | 12 | 12 | 100% |
 | 4: Cart/Checkout | 12 | 0 | 0% |
 | 5: Orders | 9 | 0 | 0% |
 | 6: Admin Products | 9 | 0 | 0% |
@@ -392,7 +393,7 @@
 | 8: Notifications | 8 | 0 | 0% |
 | 9: Analytics | 5 | 0 | 0% |
 | 10: Polish/Deploy | 18 | 0 | 0% |
-| **TOTAL** | **129** | **61** | **47.3%** |
+| **TOTAL** | **129** | **62** | **48.1%** |
 
 ---
 

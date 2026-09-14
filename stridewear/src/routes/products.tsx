@@ -20,6 +20,25 @@ const productsSearchSchema = z.object({
 
 export const Route = createFileRoute('/products')({
   validateSearch: productsSearchSchema,
+  head: () => ({
+    meta: [
+      {
+        title: 'Shop All Products — StrideWear',
+      },
+      {
+        name: 'description',
+        content: 'Browse our full collection of premium sportswear, athletic apparel, and streetwear. Filter by category, size, color, and price.',
+      },
+      {
+        property: 'og:title',
+        content: 'Shop All Products — StrideWear',
+      },
+      {
+        property: 'og:description',
+        content: 'Browse our full collection of premium sportswear, athletic apparel, and streetwear.',
+      },
+    ],
+  }),
   component: ProductsPage,
 })
 

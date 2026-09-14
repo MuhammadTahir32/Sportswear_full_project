@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useProductBySlug } from '#/hooks/use-products'
 import { getImageUrl } from '#/lib/image'
@@ -10,6 +10,17 @@ import { SizeGuide } from '#/components/ui/size-guide'
 import type { Tables } from '#/lib/database.types'
 
 export const Route = createFileRoute('/products/$slug')({
+  head: () => ({
+    meta: [
+      {
+        title: 'Product — StrideWear',
+      },
+      {
+        name: 'description',
+        content: 'View product details, variants, and reviews at StrideWear.',
+      },
+    ],
+  }),
   component: ProductDetailPage,
 })
 
@@ -18,6 +29,15 @@ function ProductDetailPage() {
   const { data: product, isLoading, error } = useProductBySlug(slug)
   const [selectedImageIndex, setSelectedImageIndex] = useState(0)
   const [selectedVariant, setSelectedVariant] = useState<Tables<'product_variants'> | null>(null)
+
+  useEffect(() => {
+    if (product) {
+      document.title = `${product.name} — StrideWear`
+    }
+    return () => {
+      document.title = 'StrideWear — Premium Sportswear & Athletic Apparel'
+    }
+  }, [product])
 
   if (isLoading) {
     return (
