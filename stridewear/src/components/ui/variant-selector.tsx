@@ -7,9 +7,11 @@ type ProductVariant = Tables<'product_variants'>
 type VariantSelectorProps = {
   variants: ProductVariant[]
   onVariantSelect: (variant: ProductVariant | null) => void
+  onAddToCart: (variantId: string) => void
+  isAdding?: boolean
 }
 
-export function VariantSelector({ variants, onVariantSelect }: VariantSelectorProps) {
+export function VariantSelector({ variants, onVariantSelect, onAddToCart, isAdding }: VariantSelectorProps) {
   const [selectedColor, setSelectedColor] = useState<string | null>(null)
   const [selectedSize, setSelectedSize] = useState<string | null>(null)
 

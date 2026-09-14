@@ -6,10 +6,10 @@
 |--------|-------|
 | **Total Phases** | 11 (Phase 0-10) |
 | **Total Tasks** | 129 |
-| **Completed** | 68 |
+| **Completed** | 69 |
 | **In Progress** | 0 |
-| **Remaining** | 61 |
-| **Overall Progress** | 52.7% |
+| **Remaining** | 60 |
+| **Overall Progress** | 53.5% |
 | **Current Phase** | Phase 4: Cart & Checkout |
 | **Last Updated** | September 14, 2026 |
 
@@ -178,7 +178,7 @@
 ## PHASE 4: Cart & Checkout
 
 **Status:** In Progress
-**Progress:** 6/12 tasks (50%)
+**Progress:** 7/12 tasks (58%)
 **Goal:** Full cart management + Cash on Delivery (COD) checkout flow
 
 | ID | Task | Status | Notes |
@@ -188,7 +188,7 @@
 | 4.3 | Implement cart persistence (DB for logged-in, local state for guest) | [x] | Guest cart in localStorage, logged-in cart in DB. Auto-merge on login. Guest cart fetches variant details for display. |
 | 4.4 | Build cart item component | [x] | CartItem component: image, name, size/color, qty controls, line total, remove button |
 | 4.5 | Implement subtotal, tax, shipping, discount calculation | [x] | cart-utils.ts: calculateCart with 8% tax, free shipping over $100, coupon discount support. Cart page shows full breakdown. |
-| 4.6 | Build coupon/promo code input + validation | [ ] | |
+| 4.6 | Build coupon/promo code input + validation | [x] | useValidateCoupon hook queries coupons table (active, not expired). CouponInput component with apply/remove. Discount feeds into calculateCart. New migration 019 for public read RLS. Seed: WELCOME10 (10%), FLAT20 ($20). |
 | 4.7 | Build checkout page: shipping address step | [ ] | |
 | 4.8 | Build checkout page: shipping method step | [ ] | |
 | 4.9 | Implement COD order creation | [ ] | |

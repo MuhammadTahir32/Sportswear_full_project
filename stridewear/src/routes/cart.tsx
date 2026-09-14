@@ -1,8 +1,10 @@
+import { useState } from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useCart } from '#/hooks/use-cart'
 import { useAuth } from '#/lib/auth'
 import { calculateCart, formatPrice } from '#/lib/cart-utils'
 import { CartItem } from '#/components/ui/cart-item'
+import { CouponInput } from '#/components/ui/coupon-input'
 import { Skeleton } from '#/components/ui/skeleton'
 
 export const Route = createFileRoute('/cart')({
@@ -12,7 +14,13 @@ export const Route = createFileRoute('/cart')({
 function CartPage() {
   const { items, isLoading, itemCount } = useCart()
   const { user } = useAuth()
-  const calculation = calculateCart(items)
+  const [appliedCoupon, setAppliedCoupon] = useState<{
+    code: string
+    discount: number
+    couponId: string
+  } | null>(null)
+
+  const calculation = calculateCart(items, appliedCoupon?.discount ?? 0)
 
   if (isLoading) {
     return (
@@ -94,6 +102,25 @@ function CartPage() {
               {formatPrice(calculation.subtotal)}
             </span>
           </div>
+
+          <CouponInput
+            subtotal={calculation.subtotal}
+            appliedCoupon={appliedCoupon}
+            onApply={(discount, couponId, code) =>
+              setAppliedCoupon({ code, discount, couponId })
+            }
+            onRemove={() => setAppliedCoupon(null)}
+          />
+
+          {calculation.discount > 0 && (
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-green-600">Discount</span>
+              <span className="text-sm font-semibold text-green-600">
+                −{formatPrice(calculation.discount)}
+              </span>
+            </div>
+          )}
+
           <div className="flex items-center justify-between">
             <span className="text-sm text-brand-gray-400">Tax (8%)</span>
             <span className="text-sm font-semibold text-brand-black">
