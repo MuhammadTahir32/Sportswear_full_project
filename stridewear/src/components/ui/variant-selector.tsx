@@ -136,8 +136,12 @@ export function VariantSelector({ variants, onVariantSelect, onAddToCart, isAddi
       )}
 
       {selectedVariant && selectedVariant.stock_qty > 0 && (
-        <button className="w-full rounded-full bg-brand-lime px-6 py-3 text-sm font-bold uppercase tracking-widest text-brand-black transition-colors hover:bg-brand-lime-dark">
-          Add to Cart
+        <button
+          onClick={() => onAddToCart(selectedVariant.id)}
+          disabled={isAdding}
+          className="w-full rounded-full bg-brand-lime px-6 py-3 text-sm font-bold uppercase tracking-widest text-brand-black transition-colors hover:bg-brand-lime-dark disabled:opacity-50"
+        >
+          {isAdding ? 'Adding...' : 'Add to Cart'}
         </button>
       )}
 

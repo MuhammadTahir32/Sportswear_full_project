@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useProductBySlug } from '#/hooks/use-products'
+import { useCart } from '#/hooks/use-cart'
 import { getImageUrl } from '#/lib/image'
 import { StarRating } from '#/components/ui/star-rating'
 import { Skeleton } from '#/components/ui/skeleton'
@@ -29,6 +30,7 @@ function ProductDetailPage() {
   const { data: product, isLoading, error } = useProductBySlug(slug)
   const [selectedImageIndex, setSelectedImageIndex] = useState(0)
   const [selectedVariant, setSelectedVariant] = useState<Tables<'product_variants'> | null>(null)
+  const { addItem } = useCart()
 
   useEffect(() => {
     if (product) {
@@ -214,6 +216,8 @@ function ProductDetailPage() {
             <VariantSelector
               variants={product.product_variants}
               onVariantSelect={setSelectedVariant}
+              onAddToCart={(variantId) => addItem.mutate({ variantId })}
+              isAdding={addItem.isPending}
             />
           </div>
         </div>

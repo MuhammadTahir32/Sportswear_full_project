@@ -6,12 +6,12 @@
 |--------|-------|
 | **Total Phases** | 11 (Phase 0-10) |
 | **Total Tasks** | 129 |
-| **Completed** | 69 |
+| **Completed** | 70 |
 | **In Progress** | 0 |
-| **Remaining** | 60 |
-| **Overall Progress** | 53.5% |
+| **Remaining** | 59 |
+| **Overall Progress** | 54.3% |
 | **Current Phase** | Phase 4: Cart & Checkout |
-| **Last Updated** | September 14, 2026 |
+| **Last Updated** | September 15, 2026 |
 
 ---
 
@@ -178,7 +178,7 @@
 ## PHASE 4: Cart & Checkout
 
 **Status:** In Progress
-**Progress:** 7/12 tasks (58%)
+**Progress:** 8/12 tasks (67%)
 **Goal:** Full cart management + Cash on Delivery (COD) checkout flow
 
 | ID | Task | Status | Notes |
@@ -189,7 +189,7 @@
 | 4.4 | Build cart item component | [x] | CartItem component: image, name, size/color, qty controls, line total, remove button |
 | 4.5 | Implement subtotal, tax, shipping, discount calculation | [x] | cart-utils.ts: calculateCart with 8% tax, free shipping over $100, coupon discount support. Cart page shows full breakdown. |
 | 4.6 | Build coupon/promo code input + validation | [x] | useValidateCoupon hook queries coupons table (active, not expired). CouponInput component with apply/remove. Discount feeds into calculateCart. New migration 019 for public read RLS. Seed: WELCOME10 (10%), FLAT20 ($20). |
-| 4.7 | Build checkout page: shipping address step | [ ] | |
+| 4.7 | Build checkout page: shipping address step | [x] | Multi-step checkout layout with step indicator, useAddresses hook (TanStack Query), AddressStep component with select/add/delete, inline address form, cart redirect guard |
 | 4.8 | Build checkout page: shipping method step | [ ] | |
 | 4.9 | Implement COD order creation | [ ] | |
 | 4.10 | Implement stock decrement with race condition protection | [ ] | |
@@ -386,14 +386,14 @@
 | 1: Database | 29 | 29 | 100% |
 | 2: Auth | 11 | 11 | 100% |
 | 3: Catalog | 12 | 12 | 100% |
-| 4: Cart/Checkout | 12 | 5 | 42% |
+| 4: Cart/Checkout | 12 | 6 | 50% |
 | 5: Orders | 9 | 0 | 0% |
 | 6: Admin Products | 9 | 0 | 0% |
 | 7: Reviews/Wishlist | 6 | 0 | 0% |
 | 8: Notifications | 8 | 0 | 0% |
 | 9: Analytics | 5 | 0 | 0% |
 | 10: Polish/Deploy | 18 | 0 | 0% |
-| **TOTAL** | **129** | **67** | **51.9%** |
+| **TOTAL** | **129** | **68** | **52.7%** |
 
 ---
 
@@ -429,4 +429,4 @@ Track your understanding milestones:
 
 ---
 
-*Last Updated: September 14, 2026*
+*Last Updated: September 15, 2026*
