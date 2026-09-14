@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { supabase } from '#/lib/supabase'
 import { useAuth } from '#/lib/auth'
@@ -46,50 +45,42 @@ function setGuestCart(items: GuestCartItem[]) {
   localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items))
 }
 
+export async function mergeGuestCartOnLogin(userId: string, queryClient: ReturnType<typeof useQueryClient>) {
+  const guestCart = getGuestCart()
+  if (guestCart.length === 0) return
+
+  for (const item of guestCart) {
+    const { data: existing } = await supabase
+      .from('cart_items')
+      .select('id, quantity')
+      .eq('user_id', userId)
+      .eq('variant_id', item.variantId)
+      .single()
+
+    if (existing) {
+      await supabase
+        .from('cart_items')
+        .update({ quantity: existing.quantity + item.quantity })
+        .eq('id', existing.id)
+    } else {
+      await supabase
+        .from('cart_items')
+        .insert({ user_id: userId, variant_id: item.variantId, quantity: item.quantity })
+    }
+  }
+
+  localStorage.removeItem(CART_STORAGE_KEY)
+  queryClient.invalidateQueries({ queryKey: ['cart'] })
+}
+
 export function useCart() {
   const { user } = useAuth()
   const queryClient = useQueryClient()
-
-  // Merge guest cart into DB on login
-  useEffect(() => {
-    if (!user) return
-
-    const guestCart = getGuestCart()
-    if (guestCart.length === 0) return
-
-    async function merge() {
-      for (const item of guestCart) {
-        const { data: existing } = await supabase
-          .from('cart_items')
-          .select('id, quantity')
-          .eq('user_id', user!.id)
-          .eq('variant_id', item.variantId)
-          .single()
-
-        if (existing) {
-          await supabase
-            .from('cart_items')
-            .update({ quantity: existing.quantity + item.quantity })
-            .eq('id', existing.id)
-        } else {
-          await supabase
-            .from('cart_items')
-            .insert({ user_id: user!.id, variant_id: item.variantId, quantity: item.quantity })
-        }
-      }
-
-      localStorage.removeItem(CART_STORAGE_KEY)
-      queryClient.invalidateQueries({ queryKey: ['cart'] })
-    }
-
-    merge()
-  }, [user, queryClient])
 
   const { data: items, isLoading } = useQuery({
     queryKey: ['cart'],
     queryFn: async (): Promise<CartItemWithDetails[]> => {
       if (!user) {
-        // Guest: read from localStorage and fetch variant details
         const guestCart = getGuestCart()
         if (guestCart.length === 0) return []
 
@@ -114,7 +105,6 @@ export function useCart() {
         })).filter((item) => item.product_variants)
       }
 
-      // Logged-in: read from DB
       const { data, error } = await supabase
         .from('cart_items')
         .select(`
@@ -135,7 +125,6 @@ export function useCart() {
   const addItem = useMutation({
     mutationFn: async ({ variantId, quantity = 1 }: { variantId: string; quantity?: number }) => {
       if (!user) {
-        // Guest: save to localStorage
         const guestCart = getGuestCart()
         const existing = guestCart.find((i) => i.variantId === variantId)
         if (existing) {
@@ -147,7 +136,6 @@ export function useCart() {
         return
       }
 
-      // Logged-in: save to DB
       const { data: existing } = await supabase
         .from('cart_items')
         .select('id, quantity')
@@ -176,20 +164,17 @@ export function useCart() {
   const updateQuantity = useMutation({
     mutationFn: async ({ itemId, quantity }: { itemId: string; quantity: number }) => {
       if (!user) {
-        // Guest: update localStorage
         const guestCart = getGuestCart()
+        const idx = guestCart.findIndex((i) => i.variantId === itemId.replace('guest-', ''))
         if (quantity <= 0) {
-          const idx = guestCart.findIndex((i) => `guest-${guestCart.indexOf(i)}` === itemId || i.variantId === itemId.replace('guest-', ''))
           if (idx !== -1) guestCart.splice(idx, 1)
         } else {
-          const item = guestCart.find((i) => `guest-${guestCart.indexOf(i)}` === itemId || i.variantId === itemId.replace('guest-', ''))
-          if (item) item.quantity = quantity
+          if (idx !== -1) guestCart[idx].quantity = quantity
         }
         setGuestCart(guestCart)
         return
       }
 
-      // Logged-in: update DB
       if (quantity <= 0) {
         const { error } = await supabase
           .from('cart_items')
@@ -212,15 +197,13 @@ export function useCart() {
   const removeItem = useMutation({
     mutationFn: async (itemId: string) => {
       if (!user) {
-        // Guest: remove from localStorage
         const guestCart = getGuestCart()
-        const idx = guestCart.findIndex((i) => `guest-${guestCart.indexOf(i)}` === itemId || i.variantId === itemId.replace('guest-', ''))
+        const idx = guestCart.findIndex((i) => i.variantId === itemId.replace('guest-', ''))
         if (idx !== -1) guestCart.splice(idx, 1)
         setGuestCart(guestCart)
         return
       }
 
-      // Logged-in: remove from DB
       const { error } = await supabase
         .from('cart_items')
         .delete()
