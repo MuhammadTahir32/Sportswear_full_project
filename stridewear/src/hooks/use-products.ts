@@ -76,14 +76,6 @@ export function useProducts(filters: ProductFilters = {}) {
         query = query.eq('gender', gender)
       }
 
-      if (minPrice !== undefined) {
-        query = query.gte('sale_price', minPrice)
-      }
-
-      if (maxPrice !== undefined) {
-        query = query.lte('sale_price', maxPrice)
-      }
-
       if (search) {
         query = query.or(`name.ilike.%${search}%,description.ilike.%${search}%`)
       }
@@ -105,16 +97,27 @@ export function useProducts(filters: ProductFilters = {}) {
 
       query = query.range(from, to)
 
-      const { data, count, error } = await query
+      const { data, error } = await query
 
       if (error) throw error
 
+      let products = (data ?? []) as unknown as ProductListItem[]
+
+      if (minPrice !== undefined || maxPrice !== undefined) {
+        products = products.filter((p) => {
+          const effectivePrice = p.sale_price ?? p.base_price
+          if (minPrice !== undefined && effectivePrice < minPrice) return false
+          if (maxPrice !== undefined && effectivePrice > maxPrice) return false
+          return true
+        })
+      }
+
       return {
-        products: (data ?? []) as unknown as ProductListItem[],
-        total: count ?? 0,
+        products,
+        total: products.length,
         page,
         perPage,
-        totalPages: Math.ceil((count ?? 0) / perPage),
+        totalPages: Math.ceil(products.length / perPage),
       }
     },
     staleTime: 60 * 1000,

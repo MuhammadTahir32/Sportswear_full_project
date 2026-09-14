@@ -19,10 +19,10 @@ const GENDER_OPTIONS = [
 ]
 
 const PRICE_PRESETS = [
-  { label: 'Under $50', min: '', max: '50' },
-  { label: '$50 - $100', min: '50', max: '100' },
-  { label: '$100 - $150', min: '100', max: '150' },
-  { label: '$150+', min: '150', max: '' },
+  { label: 'Under $50', min: 0, max: 50 },
+  { label: '$50 - $100', min: 50, max: 100 },
+  { label: '$100 - $150', min: 100, max: 150 },
+  { label: '$150+', min: 150, max: 9999 },
 ]
 
 export function FilterSidebar({
@@ -35,27 +35,35 @@ export function FilterSidebar({
   onClearAll,
   className,
 }: FilterSidebarProps) {
-  const hasActiveFilters = !!gender || !!minPrice || !!maxPrice
+  const currentMin = minPrice ? Number(minPrice) : -1
+  const currentMax = maxPrice ? Number(maxPrice) : -1
 
-  const activePresetIndex = PRICE_PRESETS.findIndex(
-    (p) => p.min === (minPrice ?? '') && p.max === (maxPrice ?? ''),
-  )
-
-  function handlePresetClick(preset: (typeof PRICE_PRESETS)[number], index: number) {
-    if (activePresetIndex === index) {
-      onMinPriceChange('')
-      onMaxPriceChange('')
-    } else {
-      onMinPriceChange(preset.min)
-      onMaxPriceChange(preset.max)
+  let activePresetIndex = -1
+  for (let i = 0; i < PRICE_PRESETS.length; i++) {
+    const p = PRICE_PRESETS[i]
+    if (currentMin === p.min && currentMax === p.max) {
+      activePresetIndex = i
+      break
     }
   }
+
+  const hasActiveFilters = !!gender || activePresetIndex !== -1
 
   function handleGenderClick(value: string) {
     if (gender === value) {
       onGenderChange(undefined)
     } else {
       onGenderChange(value)
+    }
+  }
+
+  function handlePresetClick(preset: (typeof PRICE_PRESETS)[number], index: number) {
+    if (activePresetIndex === index) {
+      onMinPriceChange('')
+      onMaxPriceChange('')
+    } else {
+      onMinPriceChange(String(preset.min))
+      onMaxPriceChange(String(preset.max))
     }
   }
 

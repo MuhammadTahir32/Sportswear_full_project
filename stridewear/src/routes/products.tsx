@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { useProducts } from '#/hooks/use-products'
 import { ProductCard } from '#/components/ui/product-card'
 import { ProductCardSkeleton } from '#/components/ui/skeleton'
+import { ActiveFilters } from '#/components/ui/active-filters'
 import { CategorySidebar } from '#/components/layout/category-sidebar'
 import { FilterSidebar } from '#/components/layout/filter-sidebar'
 import { cn } from '#/lib/cn'
@@ -71,6 +72,31 @@ function ProductsPage() {
     navigate({ to: '/products', search: { page: 1, sort, category } })
   }
 
+  function removeFilter(key: string) {
+    const updates: Record<string, unknown> = { page: 1, sort, category }
+    if (key === 'gender') updates.gender = undefined
+    if (key === 'price') {
+      updates.minPrice = undefined
+      updates.maxPrice = undefined
+    }
+    navigate({ to: '/products', search: updates })
+  }
+
+  const activeFilters: { key: string; label: string }[] = []
+  if (gender) activeFilters.push({ key: 'gender', label: gender })
+
+  if (minPrice || maxPrice) {
+    const presets: Record<string, string> = {
+      '0-50': 'Under $50',
+      '50-100': '$50 - $100',
+      '100-150': '$100 - $150',
+      '150-9999': '$150+',
+    }
+    const key = `${minPrice ?? 0}-${maxPrice ?? 0}`
+    const label = presets[key] ?? `$${minPrice ?? 0} - $${maxPrice ?? '∞'}`
+    activeFilters.push({ key: 'price', label })
+  }
+
   if (error) {
     return (
       <div className="mx-auto max-w-7xl px-4 py-16 text-center">
@@ -91,6 +117,14 @@ function ProductsPage() {
           {category ? category.replace(/-/g, ' ') : 'All Products'}
         </h1>
       </div>
+
+      <ActiveFilters
+        filters={activeFilters.map((f) => ({
+          ...f,
+          onRemove: () => removeFilter(f.key),
+        }))}
+        className="mb-6"
+      />
 
       <div className="flex gap-8">
         <div className="hidden w-48 flex-col gap-8 lg:flex">
