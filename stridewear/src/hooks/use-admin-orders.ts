@@ -78,6 +78,7 @@ export function useAdminOrders(options: UseAdminOrdersOptions = {}) {
           ),
           order_status_history(id, status, changed_at)
         `)
+        .neq('user_id', user.id)
 
       if (status !== 'all') {
         query = query.eq('status', status)
