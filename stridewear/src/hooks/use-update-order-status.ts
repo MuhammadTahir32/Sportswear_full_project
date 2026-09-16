@@ -56,6 +56,8 @@ export function useUpdateOrderStatus() {
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: ['admin-orders'] })
       queryClient.invalidateQueries({ queryKey: ['admin-order', variables.orderId] })
+      queryClient.invalidateQueries({ queryKey: ['orders'] })
+      queryClient.invalidateQueries({ queryKey: ['order', variables.orderId] })
     },
   })
 }

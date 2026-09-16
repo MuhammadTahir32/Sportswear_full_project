@@ -230,11 +230,17 @@
 **Phase 5 Completion Checklist:**
 - [x] Customer can view order history
 - [x] Customer can view order details
-- [ ] Admin can view all orders
-- [ ] Admin can filter/search orders
-- [ ] Admin can update order status
+- [x] Admin can view all orders
+- [x] Admin can filter/search orders
+- [x] Admin can update order status
 - [x] Status history timeline works
-- [ ] User understands Edge Functions
+- [x] Customer can cancel own orders (pending/paid only)
+- [x] Admin navbar shows Admin link, hides Orders link
+- [x] Customer navbar shows Orders link, hides Admin link
+- [x] Admin excludes own orders from order list
+- [x] Customer name displays correctly in admin views
+- [x] Order timing (date + time) shown in admin list and detail
+- [x] RLS policies allow admin access without recursion
 
 ---
 
