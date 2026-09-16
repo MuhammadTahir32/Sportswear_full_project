@@ -84,7 +84,7 @@ export function useOrder(orderId: string | null) {
         `)
         .eq('id', orderId)
         .eq('user_id', user.id)
-        .single()
+        .maybeSingle()
 
       if (error) throw error
       return data as OrderWithItems
