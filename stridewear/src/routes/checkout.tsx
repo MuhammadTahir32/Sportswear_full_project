@@ -5,9 +5,12 @@ import { ProtectedRoute } from '#/components/auth/protected-route'
 import { CheckoutLayout } from '#/components/checkout/checkout-layout'
 import { AddressStep } from '#/components/checkout/address-step'
 import { ShippingStep } from '#/components/checkout/shipping-step'
+import { ReviewStep } from '#/components/checkout/review-step'
+import { usePlaceOrder } from '#/hooks/use-place-order'
 import { calculateCart } from '#/lib/cart-utils'
 import type { Address } from '#/hooks/use-addresses'
 import type { ShippingMethod } from '#/components/checkout/shipping-step'
+import type { Coupon } from '#/hooks/use-coupon'
 
 export const Route = createFileRoute('/checkout')({
   component: CheckoutWrapper,
@@ -22,12 +25,15 @@ function CheckoutWrapper() {
 }
 
 function Checkout() {
-  const { items, isLoading: cartLoading } = useCart()
+  const { items, isLoading: cartLoading, clearCart } = useCart()
   const [step, setStep] = useState(1)
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null)
   const [selectedShipping, setSelectedShipping] = useState<ShippingMethod | null>(null)
+  const [appliedCoupon] = useState<Coupon | null>(null)
+  const [couponDiscount] = useState(0)
+  const placeOrder = usePlaceOrder()
 
-  const calculation = calculateCart(items)
+  const calculation = calculateCart(items, couponDiscount)
 
   if (cartLoading) {
     return (
@@ -53,6 +59,24 @@ function Checkout() {
     }
   }
 
+  async function handlePlaceOrder() {
+    if (!selectedAddress || !selectedShipping) return
+
+    await placeOrder.mutateAsync({
+      items,
+      address: selectedAddress,
+      shipping: selectedShipping,
+      subtotal: calculation.subtotal,
+      tax: calculation.tax,
+      discount: calculation.discount,
+      total: calculation.total,
+      coupon: appliedCoupon,
+    })
+
+    await clearCart.mutateAsync()
+    setStep(4)
+  }
+
   return (
     <CheckoutLayout
       currentStep={step}
@@ -61,19 +85,25 @@ function Checkout() {
           ? handleAddressContinue
           : step === 2
             ? handleShippingContinue
-            : undefined
+            : step === 3
+              ? handlePlaceOrder
+              : undefined
       }
       continueLabel={
         step === 1
           ? 'Continue to Shipping'
           : step === 2
             ? 'Continue to Review'
-            : undefined
+            : step === 3
+              ? 'Place Order'
+              : undefined
       }
       isContinueDisabled={
         (step === 1 && !selectedAddress) ||
-        (step === 2 && !selectedShipping)
+        (step === 2 && !selectedShipping) ||
+        (step === 3 && placeOrder.isPending)
       }
+      isContinueLoading={step === 3 && placeOrder.isPending}
     >
       {step === 1 && (
         <AddressStep
@@ -90,15 +120,17 @@ function Checkout() {
         />
       )}
 
-      {step === 3 && (
-        <div>
-          <h2 className="font-display text-2xl uppercase text-brand-black">
-            Review Order
-          </h2>
-          <p className="mt-1 text-sm text-brand-gray-400">
-            Coming in Task 4.9
-          </p>
-        </div>
+      {step === 3 && selectedAddress && selectedShipping && (
+        <ReviewStep
+          items={items}
+          address={selectedAddress}
+          shipping={selectedShipping}
+          subtotal={calculation.subtotal}
+          tax={calculation.tax}
+          shippingCost={calculation.shipping}
+          discount={calculation.discount}
+          total={calculation.total}
+        />
       )}
 
       {step === 4 && (
