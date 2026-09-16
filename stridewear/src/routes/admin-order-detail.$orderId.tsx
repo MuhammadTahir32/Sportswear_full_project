@@ -1,5 +1,7 @@
+import { useState } from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { useAdminOrder } from '#/hooks/use-admin-orders'
+import { useAdminOrder, type OrderStatus } from '#/hooks/use-admin-orders'
+import { useUpdateOrderStatus } from '#/hooks/use-update-order-status'
 import { AdminRoute } from '#/components/auth/admin-route'
 import { formatPrice } from '#/lib/cart-utils'
 import { getImageUrl } from '#/lib/image'
@@ -14,7 +16,7 @@ export const Route = createFileRoute('/admin-order-detail/$orderId')({
 
 const STATUS_STYLES: Record<string, string> = {
   pending: 'bg-yellow-100 text-yellow-800',
-  confirmed: 'bg-blue-100 text-blue-800',
+  paid: 'bg-blue-100 text-blue-800',
   processing: 'bg-blue-100 text-blue-800',
   shipped: 'bg-purple-100 text-purple-800',
   delivered: 'bg-green-100 text-green-800',
@@ -24,17 +26,31 @@ const STATUS_STYLES: Record<string, string> = {
 
 const STATUS_TIMELINE: Record<string, string[]> = {
   pending: ['pending'],
-  confirmed: ['pending', 'confirmed'],
-  processing: ['pending', 'confirmed', 'processing'],
-  shipped: ['pending', 'confirmed', 'processing', 'shipped'],
-  delivered: ['pending', 'confirmed', 'processing', 'shipped', 'delivered'],
+  paid: ['pending', 'paid'],
+  processing: ['pending', 'paid', 'processing'],
+  shipped: ['pending', 'paid', 'processing', 'shipped'],
+  delivered: ['pending', 'paid', 'processing', 'shipped', 'delivered'],
   cancelled: ['pending', 'cancelled'],
-  refunded: ['pending', 'confirmed', 'refunded'],
+  refunded: ['pending', 'paid', 'refunded'],
 }
+
+const STATUS_OPTIONS: { value: OrderStatus; label: string }[] = [
+  { value: 'pending', label: 'Pending' },
+  { value: 'paid', label: 'Paid' },
+  { value: 'processing', label: 'Processing' },
+  { value: 'shipped', label: 'Shipped' },
+  { value: 'delivered', label: 'Delivered' },
+  { value: 'cancelled', label: 'Cancelled' },
+  { value: 'refunded', label: 'Refunded' },
+]
 
 function AdminOrderDetail() {
   const { orderId } = Route.useParams()
   const { data: order, isLoading } = useAdminOrder(orderId)
+  const updateStatus = useUpdateOrderStatus()
+  const [newStatus, setNewStatus] = useState<OrderStatus>('pending')
+  const [trackingNumber, setTrackingNumber] = useState('')
+  const [updateError, setUpdateError] = useState<string | null>(null)
 
   if (isLoading) {
     return (
@@ -86,7 +102,7 @@ function AdminOrderDetail() {
   }
 
   const timelineSteps = STATUS_TIMELINE[order.status] ?? ['pending']
-  const allSteps = ['pending', 'confirmed', 'processing', 'shipped', 'delivered']
+  const allSteps = ['pending', 'paid', 'processing', 'shipped', 'delivered']
 
   const orderDate = new Date(order.created_at)
 
@@ -185,6 +201,66 @@ function AdminOrderDetail() {
                 )
               })}
             </div>
+          </div>
+
+          <div className="rounded-sm border border-brand-gray-100 bg-white p-6">
+            <h2 className="text-xs font-bold uppercase tracking-widest text-brand-gray-400">
+              Update Order Status
+            </h2>
+            <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-end">
+              <div className="flex-1">
+                <label className="mb-1.5 block text-xs font-bold uppercase tracking-widest text-brand-gray-700">
+                  New Status
+                </label>
+                <select
+                  value={newStatus}
+                  onChange={(e) => setNewStatus(e.target.value as OrderStatus)}
+                  className="w-full border border-brand-gray-100 bg-white px-4 py-2.5 text-sm text-brand-black focus:border-brand-black focus:outline-none"
+                >
+                  {STATUS_OPTIONS.map((opt) => (
+                    <option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex-1">
+                <label className="mb-1.5 block text-xs font-bold uppercase tracking-widest text-brand-gray-700">
+                  Tracking Number (optional)
+                </label>
+                <input
+                  type="text"
+                  value={trackingNumber}
+                  onChange={(e) => setTrackingNumber(e.target.value)}
+                  placeholder="Enter tracking number"
+                  className="w-full border border-brand-gray-100 bg-white px-4 py-2.5 text-sm text-brand-black placeholder-brand-gray-400 focus:border-brand-black focus:outline-none"
+                />
+              </div>
+              <button
+                onClick={async () => {
+                  setUpdateError(null)
+                  try {
+                    await updateStatus.mutateAsync({
+                      orderId: order.id,
+                      status: newStatus,
+                      trackingNumber: trackingNumber || undefined,
+                    })
+                  } catch (err) {
+                    setUpdateError(err instanceof Error ? err.message : 'Failed to update')
+                  }
+                }}
+                disabled={updateStatus.isPending || newStatus === order.status}
+                className="bg-brand-black px-6 py-2.5 text-sm font-semibold uppercase tracking-wider text-brand-white hover:bg-brand-black-light disabled:bg-brand-gray-400"
+              >
+                {updateStatus.isPending ? 'Updating...' : 'Update Status'}
+              </button>
+            </div>
+            {updateError && (
+              <p className="mt-3 text-sm text-red-600">{updateError}</p>
+            )}
+            {updateStatus.isSuccess && (
+              <p className="mt-3 text-sm text-green-600">Order status updated successfully</p>
+            )}
           </div>
 
           <div className="rounded-sm border border-brand-gray-100 bg-white p-6">

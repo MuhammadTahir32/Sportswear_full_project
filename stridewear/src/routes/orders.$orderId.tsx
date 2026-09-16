@@ -1,5 +1,7 @@
+import { useState } from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useOrder } from '#/hooks/use-orders'
+import { useUpdateOrderStatus } from '#/hooks/use-update-order-status'
 import { ProtectedRoute } from '#/components/auth/protected-route'
 import { formatPrice } from '#/lib/cart-utils'
 import { getImageUrl } from '#/lib/image'
@@ -39,6 +41,11 @@ const STATUS_TIMELINE: Record<string, string[]> = {
 function OrderDetail() {
   const { orderId } = Route.useParams()
   const { data: order, isLoading } = useOrder(orderId)
+  const updateStatus = useUpdateOrderStatus()
+  const [showCancelConfirm, setShowCancelConfirm] = useState(false)
+  const [cancelError, setCancelError] = useState<string | null>(null)
+
+  const canCancel = order?.status === 'pending' || order?.status === 'paid'
 
   if (isLoading) {
     return (
@@ -176,6 +183,68 @@ function OrderDetail() {
               })}
             </div>
           </div>
+
+          {canCancel && (
+            <div className="rounded-sm border border-red-200 bg-red-50 p-6">
+              <h2 className="text-xs font-bold uppercase tracking-widest text-red-700">
+                Cancel Order
+              </h2>
+              <p className="mt-2 text-sm text-red-600">
+                Need to cancel? You can cancel this order before it is shipped.
+              </p>
+              {!showCancelConfirm ? (
+                <button
+                  onClick={() => setShowCancelConfirm(true)}
+                  className="mt-4 border border-red-600 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-red-600 hover:bg-red-600 hover:text-white"
+                >
+                  Cancel Order
+                </button>
+              ) : (
+                <div className="mt-4">
+                  <p className="text-sm font-semibold text-red-700">
+                    Are you sure? This action cannot be undone.
+                  </p>
+                  <div className="mt-3 flex gap-3">
+                    <button
+                      onClick={async () => {
+                        setCancelError(null)
+                        try {
+                          await updateStatus.mutateAsync({
+                            orderId: order.id,
+                            status: 'cancelled',
+                          })
+                          setShowCancelConfirm(false)
+                        } catch (err) {
+                          setCancelError(err instanceof Error ? err.message : 'Failed to cancel')
+                        }
+                      }}
+                      disabled={updateStatus.isPending}
+                      className="bg-red-600 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-white hover:bg-red-700 disabled:bg-red-400"
+                    >
+                      {updateStatus.isPending ? 'Cancelling...' : 'Yes, Cancel Order'}
+                    </button>
+                    <button
+                      onClick={() => setShowCancelConfirm(false)}
+                      className="border border-brand-gray-100 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-brand-gray-700 hover:bg-brand-gray-50"
+                    >
+                      Keep Order
+                    </button>
+                  </div>
+                  {cancelError && (
+                    <p className="mt-2 text-sm text-red-600">{cancelError}</p>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+
+          {order.status === 'cancelled' && (
+            <div className="rounded-sm border border-red-200 bg-red-50 p-6">
+              <p className="text-sm font-semibold text-red-700">
+                This order has been cancelled.
+              </p>
+            </div>
+          )}
 
           <div className="rounded-sm border border-brand-gray-100 bg-white p-6">
             <h2 className="text-xs font-bold uppercase tracking-widest text-brand-gray-400">

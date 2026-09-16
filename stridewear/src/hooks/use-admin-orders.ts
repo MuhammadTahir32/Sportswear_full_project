@@ -35,11 +35,12 @@ export type AdminOrderWithDetails = Order & {
 
 export type OrderStatus =
   | 'pending'
-  | 'confirmed'
+  | 'paid'
   | 'processing'
   | 'shipped'
   | 'delivered'
   | 'cancelled'
+  | 'refunded'
 
 interface UseAdminOrdersOptions {
   status?: OrderStatus | 'all'

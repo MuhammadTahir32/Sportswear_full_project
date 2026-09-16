@@ -6,10 +6,10 @@
 |--------|-------|
 | **Total Phases** | 11 (Phase 0-10) |
 | **Total Tasks** | 129 |
-| **Completed** | 86 |
+| **Completed** | 88 |
 | **In Progress** | 0 |
-| **Remaining** | 46 |
-| **Overall Progress** | 67% |
+| **Remaining** | 44 |
+| **Overall Progress** | 68% |
 | **Current Phase** | Phase 5: Order Management |
 | **Last Updated** | September 16, 2026 |
 
@@ -211,8 +211,8 @@
 
 ## PHASE 5: Order Management
 
-**Status:** In Progress
-**Progress:** 6/9 tasks (67%)
+**Status:** Complete
+**Progress:** 9/9 tasks (100%)
 **Goal:** Customer order history + admin order management
 
 | ID | Task | Status | Notes |
@@ -222,10 +222,10 @@
 | 5.3 | Build order detail page (items, tracking, status timeline) | [x] | /orders/$orderId route with ProtectedRoute. Shows: back link, order ID + status badge, date, status timeline (5-step with checkmarks), shipping address, order items with images/colors/sizes, COD payment info + tracking number, price breakdown (subtotal/discount/tax/shipping/total), status history log. Loading skeletons + "Order Not Found" state. |
 | 5.4 | Create admin: useAdminOrders hook | [x] | useAdminOrders() fetches all orders (admin scope) with profiles, order_items, variants, products, status_history. Supports filter by status, search by order ID, sort. useAdminOrder(orderId) for single order detail. Admin-only via role check. |
 | 5.5 | Build admin order list with TanStack Table | [x] | /admin-orders route with AdminRoute guard. TanStack Table (legacy API) with sortable columns: Order ID, Customer, Date, Items, Total, Status. Status filter dropdown, search by order ID, loading skeletons, empty states. Brand-themed table styling. |
-| 5.6 | Create Edge Function: admin-update-order-status | [ ] | |
+| 5.6 | Create Edge Function: admin-update-order-status | [x] | Deno Edge Function at supabase/functions/admin-update-order-status/index.ts. Validates admin role, updates order status, inserts status history record. Frontend hook useUpdateOrderStatus calls it via fetch. Added status update controls to admin order detail page (dropdown + tracking number input). |
 | 5.7 | Build admin order detail: status update, tracking number input | [x] | /admin-orders/$orderId route with AdminRoute guard. Shows: back link to /admin-orders, order ID + status badge, customer name, status timeline (5-step), shipping address, order items with images, COD payment + tracking, price breakdown, status history log. Uses useAdminOrder hook. |
-| 5.8 | Implement order status history timeline UI | [ ] | |
-| 5.9 | Implement order cancellation request flow | [ ] | |
+| 5.8 | Implement order status history timeline UI | [x] | Visual 5-step timeline with checkmarks on both admin and customer order detail pages. Status History section below shows each status change with timestamp, reversed chronological order. |
+| 5.9 | Implement order cancellation request flow | [x] | Customer can cancel own orders (pending/paid only) from order detail page. Red cancel section with confirmation dialog. RLS policy allows user to update own order to cancelled status only. Shows "This order has been cancelled" when cancelled. |
 
 **Phase 5 Completion Checklist:**
 - [x] Customer can view order history
@@ -387,13 +387,13 @@
 | 2: Auth | 11 | 11 | 100% |
 | 3: Catalog | 12 | 12 | 100% |
 | 4: Cart/Checkout | 12 | 12 | 100% |
-| 5: Orders | 9 | 6 | 67% |
+| 5: Orders | 9 | 9 | 100% |
 | 6: Admin Products | 9 | 0 | 0% |
 | 7: Reviews/Wishlist | 6 | 0 | 0% |
 | 8: Notifications | 8 | 0 | 0% |
 | 9: Analytics | 5 | 0 | 0% |
 | 10: Polish/Deploy | 18 | 0 | 0% |
-| **TOTAL** | **129** | **86** | **67%** |
+| **TOTAL** | **129** | **88** | **68%** |
 
 ---
 
