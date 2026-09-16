@@ -37,16 +37,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const queryClient = useQueryClient()
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session)
-      setUser(session?.user ?? null)
+    const timeout = setTimeout(() => {
       setIsLoading(false)
+    }, 5000)
 
-      if (session?.user) {
-        fetchProfile(session.user.id, setProfile)
-        mergeGuestCartOnLogin(session.user.id, queryClient)
-      }
-    })
+    supabase.auth
+      .getSession()
+      .then(({ data: { session } }) => {
+        clearTimeout(timeout)
+        setSession(session)
+        setUser(session?.user ?? null)
+        setIsLoading(false)
+
+        if (session?.user) {
+          fetchProfile(session.user.id, setProfile)
+          mergeGuestCartOnLogin(session.user.id, queryClient)
+        }
+      })
+      .catch(() => {
+        clearTimeout(timeout)
+        setIsLoading(false)
+      })
 
     const {
       data: { subscription },
@@ -63,7 +74,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     })
 
-    return () => subscription.unsubscribe()
+    return () => {
+      clearTimeout(timeout)
+      subscription.unsubscribe()
+    }
   }, [queryClient])
 
   return (
