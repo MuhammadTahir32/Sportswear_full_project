@@ -4,7 +4,10 @@ import { useCart } from '#/hooks/use-cart'
 import { ProtectedRoute } from '#/components/auth/protected-route'
 import { CheckoutLayout } from '#/components/checkout/checkout-layout'
 import { AddressStep } from '#/components/checkout/address-step'
+import { ShippingStep } from '#/components/checkout/shipping-step'
+import { calculateCart } from '#/lib/cart-utils'
 import type { Address } from '#/hooks/use-addresses'
+import type { ShippingMethod } from '#/components/checkout/shipping-step'
 
 export const Route = createFileRoute('/checkout')({
   component: CheckoutWrapper,
@@ -22,6 +25,9 @@ function Checkout() {
   const { items, isLoading: cartLoading } = useCart()
   const [step, setStep] = useState(1)
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null)
+  const [selectedShipping, setSelectedShipping] = useState<ShippingMethod | null>(null)
+
+  const calculation = calculateCart(items)
 
   if (cartLoading) {
     return (
@@ -41,12 +47,33 @@ function Checkout() {
     }
   }
 
+  function handleShippingContinue() {
+    if (selectedShipping) {
+      setStep(3)
+    }
+  }
+
   return (
     <CheckoutLayout
       currentStep={step}
-      onContinue={step === 1 ? handleAddressContinue : undefined}
-      continueLabel={step === 1 ? 'Continue to Shipping' : undefined}
-      isContinueDisabled={step === 1 && !selectedAddress}
+      onContinue={
+        step === 1
+          ? handleAddressContinue
+          : step === 2
+            ? handleShippingContinue
+            : undefined
+      }
+      continueLabel={
+        step === 1
+          ? 'Continue to Shipping'
+          : step === 2
+            ? 'Continue to Review'
+            : undefined
+      }
+      isContinueDisabled={
+        (step === 1 && !selectedAddress) ||
+        (step === 2 && !selectedShipping)
+      }
     >
       {step === 1 && (
         <AddressStep
@@ -56,14 +83,11 @@ function Checkout() {
       )}
 
       {step === 2 && (
-        <div>
-          <h2 className="font-display text-2xl uppercase text-brand-black">
-            Shipping Method
-          </h2>
-          <p className="mt-1 text-sm text-brand-gray-400">
-            Coming in Task 4.8
-          </p>
-        </div>
+        <ShippingStep
+          selectedShipping={selectedShipping}
+          onSelect={setSelectedShipping}
+          subtotal={calculation.subtotal}
+        />
       )}
 
       {step === 3 && (
