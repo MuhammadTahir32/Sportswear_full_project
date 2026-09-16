@@ -6,6 +6,7 @@ import { CheckoutLayout } from '#/components/checkout/checkout-layout'
 import { AddressStep } from '#/components/checkout/address-step'
 import { ShippingStep } from '#/components/checkout/shipping-step'
 import { ReviewStep } from '#/components/checkout/review-step'
+import { ConfirmationStep } from '#/components/checkout/confirmation-step'
 import { usePlaceOrder } from '#/hooks/use-place-order'
 import { calculateCart } from '#/lib/cart-utils'
 import type { Address } from '#/hooks/use-addresses'
@@ -32,6 +33,7 @@ function Checkout() {
   const [appliedCoupon] = useState<Coupon | null>(null)
   const [couponDiscount] = useState(0)
   const [orderError, setOrderError] = useState<string | null>(null)
+  const [orderId, setOrderId] = useState<string | null>(null)
   const placeOrder = usePlaceOrder()
 
   const calculation = calculateCart(items, couponDiscount)
@@ -44,7 +46,7 @@ function Checkout() {
     )
   }
 
-  if (items.length === 0) {
+  if (items.length === 0 && step < 4) {
     return <Navigate to="/cart" />
   }
 
@@ -66,7 +68,7 @@ function Checkout() {
     setOrderError(null)
 
     try {
-      await placeOrder.mutateAsync({
+      const id = await placeOrder.mutateAsync({
         items,
         address: selectedAddress,
         shipping: selectedShipping,
@@ -77,6 +79,7 @@ function Checkout() {
         coupon: appliedCoupon,
       })
 
+      setOrderId(id)
       await clearCart.mutateAsync()
       setStep(4)
     } catch (err) {
@@ -149,15 +152,8 @@ function Checkout() {
         </>
       )}
 
-      {step === 4 && (
-        <div>
-          <h2 className="font-display text-2xl uppercase text-brand-black">
-            Order Confirmed
-          </h2>
-          <p className="mt-1 text-sm text-brand-gray-400">
-            Coming in Task 4.11
-          </p>
-        </div>
+      {step === 4 && orderId && (
+        <ConfirmationStep orderId={orderId} total={calculation.total} />
       )}
     </CheckoutLayout>
   )
