@@ -55,7 +55,7 @@ export async function mergeGuestCartOnLogin(userId: string, queryClient: ReturnT
       .select('id, quantity')
       .eq('user_id', userId)
       .eq('variant_id', item.variantId)
-      .single()
+      .maybeSingle()
 
     if (existing) {
       await supabase
@@ -141,7 +141,7 @@ export function useCart() {
         .select('id, quantity')
         .eq('user_id', user.id)
         .eq('variant_id', variantId)
-        .single()
+        .maybeSingle()
 
       if (existing) {
         const { error } = await supabase
