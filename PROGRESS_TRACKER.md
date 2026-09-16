@@ -6,7 +6,7 @@
 |--------|-------|
 | **Total Phases** | 11 (Phase 0-10) |
 | **Total Tasks** | 129 |
-| **Completed** | 80 |
+| **Completed** | 81 |
 | **In Progress** | 0 |
 | **Remaining** | 49 |
 | **Overall Progress** | 62% |
@@ -211,13 +211,13 @@
 
 ## PHASE 5: Order Management
 
-**Status:** Not Started
-**Progress:** 0/9 tasks (0%)
+**Status:** In Progress
+**Progress:** 1/9 tasks (11%)
 **Goal:** Customer order history + admin order management
 
 | ID | Task | Status | Notes |
 |----|------|--------|-------|
-| 5.1 | Create useOrders hook (list, detail) | [ ] | |
+| 5.1 | Create useOrders hook (list, detail) | [x] | useOrders() fetches all user orders with order_items + variants + products + status_history. useOrder(orderId) fetches single order detail. Both use TanStack Query. |
 | 5.2 | Build order history page (list with status badges) | [ ] | |
 | 5.3 | Build order detail page (items, tracking, status timeline) | [ ] | |
 | 5.4 | Create admin: useAdminOrders hook | [ ] | |
@@ -387,13 +387,13 @@
 | 2: Auth | 11 | 11 | 100% |
 | 3: Catalog | 12 | 12 | 100% |
 | 4: Cart/Checkout | 12 | 12 | 100% |
-| 5: Orders | 9 | 0 | 0% |
+| 5: Orders | 9 | 1 | 11% |
 | 6: Admin Products | 9 | 0 | 0% |
 | 7: Reviews/Wishlist | 6 | 0 | 0% |
 | 8: Notifications | 8 | 0 | 0% |
 | 9: Analytics | 5 | 0 | 0% |
 | 10: Polish/Deploy | 18 | 0 | 0% |
-| **TOTAL** | **129** | **80** | **62%** |
+| **TOTAL** | **129** | **81** | **63%** |
 
 ---
 
