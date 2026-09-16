@@ -6,7 +6,7 @@
 |--------|-------|
 | **Total Phases** | 11 (Phase 0-10) |
 | **Total Tasks** | 129 |
-| **Completed** | 70 |
+| **Completed** | 71 |
 | **In Progress** | 0 |
 | **Remaining** | 58 |
 | **Overall Progress** | 55.4% |
@@ -178,7 +178,7 @@
 ## PHASE 4: Cart & Checkout
 
 **Status:** In Progress
-**Progress:** 10/12 tasks (83%)
+**Progress:** 11/12 tasks (92%)
 **Goal:** Full cart management + Cash on Delivery (COD) checkout flow
 
 | ID | Task | Status | Notes |
@@ -192,7 +192,7 @@
 | 4.7 | Build checkout page: shipping address step | [x] | Multi-step checkout layout with step indicator, useAddresses hook (TanStack Query), AddressStep component with select/add/delete, inline address form, cart redirect guard |
 | 4.8 | Build checkout page: shipping method step | [x] | ShippingStep component with 3 tiers (Standard/Express/Overnight), free standard over $100, radio card selection matching AddressStep pattern |
 | 4.9 | Implement COD order creation | [x] | usePlaceOrder hook inserts order + order_items, ReviewStep shows full breakdown, COD payment badge, Place Order button with loading state |
-| 4.10 | Implement stock decrement with race condition protection | [ ] | |
+| 4.10 | Implement stock decrement with race condition protection | [x] | PostgreSQL decrement_stock() function with atomic UPDATE + WHERE stock_qty >= quantity check, called via supabase.rpc() before order creation, error shown on insufficient stock |
 | 4.11 | Build order confirmation page | [ ] | |
 | 4.12 | Clear cart after successful checkout | [ ] | |
 
@@ -386,14 +386,14 @@
 | 1: Database | 29 | 29 | 100% |
 | 2: Auth | 11 | 11 | 100% |
 | 3: Catalog | 12 | 12 | 100% |
-| 4: Cart/Checkout | 12 | 8 | 67% |
+| 4: Cart/Checkout | 12 | 9 | 75% |
 | 5: Orders | 9 | 0 | 0% |
 | 6: Admin Products | 9 | 0 | 0% |
 | 7: Reviews/Wishlist | 6 | 0 | 0% |
 | 8: Notifications | 8 | 0 | 0% |
 | 9: Analytics | 5 | 0 | 0% |
 | 10: Polish/Deploy | 18 | 0 | 0% |
-| **TOTAL** | **129** | **70** | **54.3%** |
+| **TOTAL** | **129** | **71** | **55%** |
 
 ---
 

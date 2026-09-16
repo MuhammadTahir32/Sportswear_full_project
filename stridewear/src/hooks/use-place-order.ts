@@ -24,6 +24,20 @@ export function usePlaceOrder() {
     mutationFn: async (input: PlaceOrderInput): Promise<string> => {
       if (!user) throw new Error('Not authenticated')
 
+      for (const item of input.items) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const { data: success } = await (supabase as any).rpc('decrement_stock', {
+          p_variant_id: item.product_variants.id,
+          p_quantity: item.quantity,
+        })
+
+        if (!success) {
+          throw new Error(
+            `Insufficient stock for ${item.product_variants.products.name} (${item.product_variants.color} / ${item.product_variants.size})`,
+          )
+        }
+      }
+
       const shippingFee =
         input.shipping.id === 'standard' && input.subtotal >= 100
           ? 0

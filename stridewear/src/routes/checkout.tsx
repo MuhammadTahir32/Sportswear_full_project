@@ -31,6 +31,7 @@ function Checkout() {
   const [selectedShipping, setSelectedShipping] = useState<ShippingMethod | null>(null)
   const [appliedCoupon] = useState<Coupon | null>(null)
   const [couponDiscount] = useState(0)
+  const [orderError, setOrderError] = useState<string | null>(null)
   const placeOrder = usePlaceOrder()
 
   const calculation = calculateCart(items, couponDiscount)
@@ -62,19 +63,27 @@ function Checkout() {
   async function handlePlaceOrder() {
     if (!selectedAddress || !selectedShipping) return
 
-    await placeOrder.mutateAsync({
-      items,
-      address: selectedAddress,
-      shipping: selectedShipping,
-      subtotal: calculation.subtotal,
-      tax: calculation.tax,
-      discount: calculation.discount,
-      total: calculation.total,
-      coupon: appliedCoupon,
-    })
+    setOrderError(null)
 
-    await clearCart.mutateAsync()
-    setStep(4)
+    try {
+      await placeOrder.mutateAsync({
+        items,
+        address: selectedAddress,
+        shipping: selectedShipping,
+        subtotal: calculation.subtotal,
+        tax: calculation.tax,
+        discount: calculation.discount,
+        total: calculation.total,
+        coupon: appliedCoupon,
+      })
+
+      await clearCart.mutateAsync()
+      setStep(4)
+    } catch (err) {
+      setOrderError(
+        err instanceof Error ? err.message : 'Failed to place order. Please try again.',
+      )
+    }
   }
 
   return (
@@ -121,16 +130,23 @@ function Checkout() {
       )}
 
       {step === 3 && selectedAddress && selectedShipping && (
-        <ReviewStep
-          items={items}
-          address={selectedAddress}
-          shipping={selectedShipping}
-          subtotal={calculation.subtotal}
-          tax={calculation.tax}
-          shippingCost={calculation.shipping}
-          discount={calculation.discount}
-          total={calculation.total}
-        />
+        <>
+          {orderError && (
+            <div className="mb-6 rounded-sm border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">
+              {orderError}
+            </div>
+          )}
+          <ReviewStep
+            items={items}
+            address={selectedAddress}
+            shipping={selectedShipping}
+            subtotal={calculation.subtotal}
+            tax={calculation.tax}
+            shippingCost={calculation.shipping}
+            discount={calculation.discount}
+            total={calculation.total}
+          />
+        </>
       )}
 
       {step === 4 && (
