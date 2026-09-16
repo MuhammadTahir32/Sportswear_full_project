@@ -76,15 +76,25 @@ function AdminOrdersList() {
     {
       accessorKey: 'created_at',
       header: 'Date',
-      cell: ({ row }) => (
-        <span className="text-sm text-brand-gray-700">
-          {new Date(row.original.created_at).toLocaleDateString('en-US', {
-            month: 'short',
-            day: 'numeric',
-            year: 'numeric',
-          })}
-        </span>
-      ),
+      cell: ({ row }) => {
+        const d = new Date(row.original.created_at)
+        return (
+          <span className="text-sm text-brand-gray-700">
+            {d.toLocaleDateString('en-US', {
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric',
+            })}
+            {' '}
+            <span className="text-brand-gray-400">
+              {d.toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit',
+              })}
+            </span>
+          </span>
+        )
+      },
     },
     {
       accessorFn: (row) => row.order_items.reduce((sum: number, item: any) => sum + item.quantity, 0),
@@ -120,7 +130,7 @@ function AdminOrdersList() {
       header: '',
       cell: ({ row }) => (
         <Link
-          to="/orders/$orderId"
+          to="/admin-order-detail/$orderId"
           params={{ orderId: row.original.id }}
           className="text-xs font-semibold uppercase tracking-wider text-brand-black hover:text-brand-lime-dark"
         >

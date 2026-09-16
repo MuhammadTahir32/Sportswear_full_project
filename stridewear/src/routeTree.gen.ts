@@ -21,6 +21,7 @@ import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SigninRouteImport } from './routes/signin'
 import { Route as SignupRouteImport } from './routes/signup'
+import { Route as AdminOrderDetailOrderIdRouteImport } from './routes/admin-order-detail.$orderId'
 import { Route as AuthConfirmRouteImport } from './routes/auth.confirm'
 import { Route as OrdersIndexRouteImport } from './routes/orders.index'
 import { Route as OrdersOrderIdRouteImport } from './routes/orders.$orderId'
@@ -86,6 +87,11 @@ const SignupRoute = SignupRouteImport.update({
   path: '/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminOrderDetailOrderIdRoute = AdminOrderDetailOrderIdRouteImport.update({
+  id: '/admin-order-detail/$orderId',
+  path: '/admin-order-detail/$orderId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthConfirmRoute = AuthConfirmRouteImport.update({
   id: '/auth/confirm',
   path: '/auth/confirm',
@@ -120,6 +126,7 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
+  '/admin-order-detail/$orderId': typeof AdminOrderDetailOrderIdRoute
   '/auth/confirm': typeof AuthConfirmRoute
   '/orders/$orderId': typeof OrdersOrderIdRoute
   '/products/$slug': typeof ProductsSlugRoute
@@ -137,6 +144,7 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
+  '/admin-order-detail/$orderId': typeof AdminOrderDetailOrderIdRoute
   '/auth/confirm': typeof AuthConfirmRoute
   '/orders/$orderId': typeof OrdersOrderIdRoute
   '/products/$slug': typeof ProductsSlugRoute
@@ -156,6 +164,7 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
+  '/admin-order-detail/$orderId': typeof AdminOrderDetailOrderIdRoute
   '/auth/confirm': typeof AuthConfirmRoute
   '/orders/$orderId': typeof OrdersOrderIdRoute
   '/products/$slug': typeof ProductsSlugRoute
@@ -176,6 +185,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/signin'
     | '/signup'
+    | '/admin-order-detail/$orderId'
     | '/auth/confirm'
     | '/orders/$orderId'
     | '/products/$slug'
@@ -193,6 +203,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/signin'
     | '/signup'
+    | '/admin-order-detail/$orderId'
     | '/auth/confirm'
     | '/orders/$orderId'
     | '/products/$slug'
@@ -211,6 +222,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/signin'
     | '/signup'
+    | '/admin-order-detail/$orderId'
     | '/auth/confirm'
     | '/orders/$orderId'
     | '/products/$slug'
@@ -230,6 +242,7 @@ export interface RootRouteChildren {
   ResetPasswordRoute: typeof ResetPasswordRoute
   SigninRoute: typeof SigninRoute
   SignupRoute: typeof SignupRoute
+  AdminOrderDetailOrderIdRoute: typeof AdminOrderDetailOrderIdRoute
   AuthConfirmRoute: typeof AuthConfirmRoute
 }
 
@@ -319,6 +332,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignupRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin-order-detail/$orderId': {
+      id: '/admin-order-detail/$orderId'
+      path: '/admin-order-detail/$orderId'
+      fullPath: '/admin-order-detail/$orderId'
+      preLoaderRoute: typeof AdminOrderDetailOrderIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth/confirm': {
       id: '/auth/confirm'
       path: '/auth/confirm'
@@ -388,6 +408,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResetPasswordRoute: ResetPasswordRoute,
   SigninRoute: SigninRoute,
   SignupRoute: SignupRoute,
+  AdminOrderDetailOrderIdRoute: AdminOrderDetailOrderIdRoute,
   AuthConfirmRoute: AuthConfirmRoute,
 }
 export const routeTree = rootRouteImport

@@ -6,10 +6,10 @@
 |--------|-------|
 | **Total Phases** | 11 (Phase 0-10) |
 | **Total Tasks** | 129 |
-| **Completed** | 85 |
+| **Completed** | 86 |
 | **In Progress** | 0 |
-| **Remaining** | 47 |
-| **Overall Progress** | 66% |
+| **Remaining** | 46 |
+| **Overall Progress** | 67% |
 | **Current Phase** | Phase 5: Order Management |
 | **Last Updated** | September 16, 2026 |
 
@@ -212,7 +212,7 @@
 ## PHASE 5: Order Management
 
 **Status:** In Progress
-**Progress:** 5/9 tasks (56%)
+**Progress:** 6/9 tasks (67%)
 **Goal:** Customer order history + admin order management
 
 | ID | Task | Status | Notes |
@@ -223,7 +223,7 @@
 | 5.4 | Create admin: useAdminOrders hook | [x] | useAdminOrders() fetches all orders (admin scope) with profiles, order_items, variants, products, status_history. Supports filter by status, search by order ID, sort. useAdminOrder(orderId) for single order detail. Admin-only via role check. |
 | 5.5 | Build admin order list with TanStack Table | [x] | /admin-orders route with AdminRoute guard. TanStack Table (legacy API) with sortable columns: Order ID, Customer, Date, Items, Total, Status. Status filter dropdown, search by order ID, loading skeletons, empty states. Brand-themed table styling. |
 | 5.6 | Create Edge Function: admin-update-order-status | [ ] | |
-| 5.7 | Build admin order detail: status update, tracking number input | [ ] | |
+| 5.7 | Build admin order detail: status update, tracking number input | [x] | /admin-orders/$orderId route with AdminRoute guard. Shows: back link to /admin-orders, order ID + status badge, customer name, status timeline (5-step), shipping address, order items with images, COD payment + tracking, price breakdown, status history log. Uses useAdminOrder hook. |
 | 5.8 | Implement order status history timeline UI | [ ] | |
 | 5.9 | Implement order cancellation request flow | [ ] | |
 
@@ -387,13 +387,13 @@
 | 2: Auth | 11 | 11 | 100% |
 | 3: Catalog | 12 | 12 | 100% |
 | 4: Cart/Checkout | 12 | 12 | 100% |
-| 5: Orders | 9 | 5 | 56% |
+| 5: Orders | 9 | 6 | 67% |
 | 6: Admin Products | 9 | 0 | 0% |
 | 7: Reviews/Wishlist | 6 | 0 | 0% |
 | 8: Notifications | 8 | 0 | 0% |
 | 9: Analytics | 5 | 0 | 0% |
 | 10: Polish/Deploy | 18 | 0 | 0% |
-| **TOTAL** | **129** | **85** | **66%** |
+| **TOTAL** | **129** | **86** | **67%** |
 
 ---
 
