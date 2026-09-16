@@ -6,10 +6,10 @@
 |--------|-------|
 | **Total Phases** | 11 (Phase 0-10) |
 | **Total Tasks** | 129 |
-| **Completed** | 83 |
+| **Completed** | 84 |
 | **In Progress** | 0 |
-| **Remaining** | 49 |
-| **Overall Progress** | 62% |
+| **Remaining** | 48 |
+| **Overall Progress** | 65% |
 | **Current Phase** | Phase 5: Order Management |
 | **Last Updated** | September 16, 2026 |
 
@@ -212,7 +212,7 @@
 ## PHASE 5: Order Management
 
 **Status:** In Progress
-**Progress:** 3/9 tasks (33%)
+**Progress:** 4/9 tasks (44%)
 **Goal:** Customer order history + admin order management
 
 | ID | Task | Status | Notes |
@@ -220,7 +220,7 @@
 | 5.1 | Create useOrders hook (list, detail) | [x] | useOrders() fetches all user orders with order_items + variants + products + status_history. useOrder(orderId) fetches single order detail. Both use TanStack Query. |
 | 5.2 | Build order history page (list with status badges) | [x] | /orders route with ProtectedRoute, order cards showing ID, date, status badge (color-coded), item count, total, product names. Empty state with "Browse Products" link. Loading skeletons. |
 | 5.3 | Build order detail page (items, tracking, status timeline) | [x] | /orders/$orderId route with ProtectedRoute. Shows: back link, order ID + status badge, date, status timeline (5-step with checkmarks), shipping address, order items with images/colors/sizes, COD payment info + tracking number, price breakdown (subtotal/discount/tax/shipping/total), status history log. Loading skeletons + "Order Not Found" state. |
-| 5.4 | Create admin: useAdminOrders hook | [ ] | |
+| 5.4 | Create admin: useAdminOrders hook | [x] | useAdminOrders() fetches all orders (admin scope) with profiles, order_items, variants, products, status_history. Supports filter by status, search by order ID, sort. useAdminOrder(orderId) for single order detail. Admin-only via role check. |
 | 5.5 | Build admin order list with TanStack Table | [ ] | |
 | 5.6 | Create Edge Function: admin-update-order-status | [ ] | |
 | 5.7 | Build admin order detail: status update, tracking number input | [ ] | |
@@ -387,13 +387,13 @@
 | 2: Auth | 11 | 11 | 100% |
 | 3: Catalog | 12 | 12 | 100% |
 | 4: Cart/Checkout | 12 | 12 | 100% |
-| 5: Orders | 9 | 3 | 33% |
+| 5: Orders | 9 | 4 | 44% |
 | 6: Admin Products | 9 | 0 | 0% |
 | 7: Reviews/Wishlist | 6 | 0 | 0% |
 | 8: Notifications | 8 | 0 | 0% |
 | 9: Analytics | 5 | 0 | 0% |
 | 10: Polish/Deploy | 18 | 0 | 0% |
-| **TOTAL** | **129** | **83** | **64%** |
+| **TOTAL** | **129** | **84** | **65%** |
 
 ---
 
