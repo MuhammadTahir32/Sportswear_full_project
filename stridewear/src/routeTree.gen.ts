@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AddressesRouteImport } from './routes/addresses'
+import { Route as AdminOrdersRouteImport } from './routes/admin-orders'
 import { Route as CartRouteImport } from './routes/cart'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
@@ -33,6 +34,11 @@ const IndexRoute = IndexRouteImport.update({
 const AddressesRoute = AddressesRouteImport.update({
   id: '/addresses',
   path: '/addresses',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminOrdersRoute = AdminOrdersRouteImport.update({
+  id: '/admin-orders',
+  path: '/admin-orders',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CartRoute = CartRouteImport.update({
@@ -104,6 +110,7 @@ const ProductsSlugRoute = ProductsSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/addresses': typeof AddressesRoute
+  '/admin-orders': typeof AdminOrdersRoute
   '/cart': typeof CartRoute
   '/checkout': typeof CheckoutRoute
   '/forgot-password': typeof ForgotPasswordRoute
@@ -121,6 +128,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/addresses': typeof AddressesRoute
+  '/admin-orders': typeof AdminOrdersRoute
   '/cart': typeof CartRoute
   '/checkout': typeof CheckoutRoute
   '/forgot-password': typeof ForgotPasswordRoute
@@ -138,6 +146,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/addresses': typeof AddressesRoute
+  '/admin-orders': typeof AdminOrdersRoute
   '/cart': typeof CartRoute
   '/checkout': typeof CheckoutRoute
   '/forgot-password': typeof ForgotPasswordRoute
@@ -157,6 +166,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/addresses'
+    | '/admin-orders'
     | '/cart'
     | '/checkout'
     | '/forgot-password'
@@ -174,6 +184,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/addresses'
+    | '/admin-orders'
     | '/cart'
     | '/checkout'
     | '/forgot-password'
@@ -190,6 +201,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/addresses'
+    | '/admin-orders'
     | '/cart'
     | '/checkout'
     | '/forgot-password'
@@ -208,6 +220,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AddressesRoute: typeof AddressesRoute
+  AdminOrdersRoute: typeof AdminOrdersRoute
   CartRoute: typeof CartRoute
   CheckoutRoute: typeof CheckoutRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
@@ -234,6 +247,13 @@ declare module '@tanstack/react-router' {
       path: '/addresses'
       fullPath: '/addresses'
       preLoaderRoute: typeof AddressesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin-orders': {
+      id: '/admin-orders'
+      path: '/admin-orders'
+      fullPath: '/admin-orders'
+      preLoaderRoute: typeof AdminOrdersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cart': {
@@ -358,6 +378,7 @@ const ProductsRouteWithChildren = ProductsRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AddressesRoute: AddressesRoute,
+  AdminOrdersRoute: AdminOrdersRoute,
   CartRoute: CartRoute,
   CheckoutRoute: CheckoutRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,

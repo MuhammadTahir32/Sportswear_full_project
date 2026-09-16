@@ -5,7 +5,7 @@ import { useCategories } from '#/hooks/use-products'
 import { useCart } from '#/hooks/use-cart'
 
 export function Header() {
-  const { user, isLoading } = useAuth()
+  const { user, profile, isLoading } = useAuth()
   const navigate = useNavigate()
   const { data: categories } = useCategories()
   const { itemCount } = useCart()
@@ -113,6 +113,15 @@ export function Header() {
               >
                 Orders
               </Link>
+
+              {profile?.role === 'admin' || profile?.role === 'super_admin' ? (
+                <Link
+                  to="/admin-orders"
+                  className="hidden text-xs font-semibold uppercase tracking-wider text-brand-lime-dark hover:text-brand-black lg:block"
+                >
+                  Admin
+                </Link>
+              ) : null}
 
               <Link
                 to="/profile"
