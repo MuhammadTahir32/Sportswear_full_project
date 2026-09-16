@@ -108,6 +108,13 @@ export function Header() {
           {isLoading ? null : user ? (
             <div className="flex items-center gap-4">
               <Link
+                to="/orders"
+                className="hidden text-xs font-semibold uppercase tracking-wider text-brand-gray-400 hover:text-brand-black lg:block"
+              >
+                Orders
+              </Link>
+
+              <Link
                 to="/profile"
                 className="text-brand-gray-400 hover:text-brand-black"
               >
